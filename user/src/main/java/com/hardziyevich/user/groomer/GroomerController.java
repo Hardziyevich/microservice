@@ -1,10 +1,7 @@
-package com.hardziyevich.user.controller;
+package com.hardziyevich.user.groomer;
 
 
-import com.hardziyevich.user.service.GroomerService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,8 +15,14 @@ public class GroomerController {
         this.groomerService = groomerService;
     }
 
-    @GetMapping
+    @GetMapping("/search")
     public List<String> showAllGroomer() {
         return groomerService.findALlGroomers();
+    }
+
+    @PostMapping("/groomerId")
+    public List<String> showAllGroomerById(@RequestBody List<Long> groomerId) {
+        System.out.println(groomerId);
+        return groomerService.findAllGroomerByListId(groomerId);
     }
 }

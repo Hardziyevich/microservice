@@ -1,4 +1,4 @@
-package com.hardziyevich.user.repository;
+package com.hardziyevich.user.groomer;
 
 import com.hardziyevich.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;

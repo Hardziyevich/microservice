@@ -1,6 +1,7 @@
 package com.hardziyevich.groomer.workday;
 
 import com.hardziyevich.resource.dto.WorkingDayDto;
+import com.hardziyevich.resource.validation.DateValidation;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +39,11 @@ public class WorkDayController {
         }
 
         return result;
+    }
+
+    @PostMapping("/groomerByDay")
+    private List<Long> showAllGroomerId(@RequestBody @DateValidation String day) {
+        return workDayService.showALlGroomerIdByWorkingDay(day);
     }
 
 }

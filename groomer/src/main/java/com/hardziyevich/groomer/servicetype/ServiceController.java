@@ -1,11 +1,9 @@
 package com.hardziyevich.groomer.servicetype;
 
-import com.hardziyevich.groomer.servicetype.TypeService;
 import com.hardziyevich.resource.dto.ServiceDto;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 

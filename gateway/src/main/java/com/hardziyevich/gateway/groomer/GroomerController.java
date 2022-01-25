@@ -1,19 +1,45 @@
 package com.hardziyevich.gateway.groomer;
 
+import com.hardziyevich.gateway.command.CommandProvider;
+import com.hardziyevich.gateway.command.CommandRequest;
+import com.hardziyevich.gateway.command.CommandRequestProvider;
+import com.hardziyevich.gateway.command.Field;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
-import java.util.List;
+import java.util.*;
+
+import static com.hardziyevich.gateway.command.Field.*;
 
 @RestController
 @RequestMapping("/groomer")
 public class GroomerController {
 
+    private final CommandRequestProvider commandRequestProvider;
+
+    public GroomerController(CommandRequestProvider commandRequestProvider) {
+        this.commandRequestProvider = commandRequestProvider;
+    }
+
     @PostMapping("/find")
-    public List<String> findAllGroomer(@RequestBody @Valid RequestGroomerDto requestGroomerDto){
-        return null;
+    public ResponseEntity<?> findAllGroomer(@RequestBody @Valid RequestGroomerDto requestGroomerDto){
+        ResponseEntity<?> response = ResponseEntity.badRequest().body("");
+        DAY.setValue(requestGroomerDto.getDay());
+        SERVICE.setValue(requestGroomerDto.getServiceType());
+        List<Field> allNotBlankFields = findAllNotBlankFields();
+        Optional<CommandProvider> requestType = CommandProvider.findRequestType(allNotBlankFields);
+        if(requestType.isPresent()){
+            CommandProvider commandProvider = requestType.get();
+            CommandRequest command = commandRequestProvider.findCommand(commandProvider);
+            response = command.request();
+        }
+        return response;
     }
 }

@@ -45,4 +45,9 @@ public class WorkDayServiceImpl implements WorkDayService {
                 .map(LocalDate::toString)
                 .toList();
     }
+
+    @Override
+    public List<Long> showALlGroomerIdByWorkingDay(String day) {
+        return groomerWorkTimeRepository.findALlGroomerIdByWorkingDay(LocalDate.parse(day));
+    }
 }

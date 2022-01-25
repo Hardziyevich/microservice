@@ -13,6 +13,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>order</name>
 	<description>Order project for Spring Boot</description>
+	<packaging>jar</packaging>
 
 	<properties>
 		<java.version>16</java.version>
