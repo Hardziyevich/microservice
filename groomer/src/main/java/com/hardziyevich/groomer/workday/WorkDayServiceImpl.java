@@ -50,4 +50,9 @@ public class WorkDayServiceImpl implements WorkDayService {
     public List<Long> showALlGroomerIdByWorkingDay(String day) {
         return groomerWorkTimeRepository.findALlGroomerIdByWorkingDay(LocalDate.parse(day));
     }
+
+    @Override
+    public List<Long> showAllGroomerIdByWorkingDayAndService(String day, String serviceType) {
+        return groomerWorkTimeRepository.findAllGroomerIdByWorkingDayAndService(LocalDate.parse(day),serviceType);
+    }
 }

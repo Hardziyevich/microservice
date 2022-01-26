@@ -10,4 +10,5 @@ public interface TypeService {
     List<String> showAllServiceByDay(String day);
     List<String> showAllServiceByGroomerId(String groomerId);
     List<String> showAllServiceByGroomerIdAndDay(ServiceDto dto);
+    List<Long> showALlGroomerIdByService(String service);
 }

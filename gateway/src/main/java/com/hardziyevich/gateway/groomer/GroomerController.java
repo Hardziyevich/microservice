@@ -1,17 +1,14 @@
 package com.hardziyevich.gateway.groomer;
 
 import com.hardziyevich.gateway.command.CommandProvider;
-import com.hardziyevich.gateway.command.CommandRequest;
 import com.hardziyevich.gateway.command.CommandRequestProvider;
 import com.hardziyevich.gateway.command.Field;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import com.hardziyevich.resource.dto.GroomerDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
 import java.util.*;
@@ -29,16 +26,16 @@ public class GroomerController {
     }
 
     @PostMapping("/find")
-    public ResponseEntity<?> findAllGroomer(@RequestBody @Valid RequestGroomerDto requestGroomerDto){
+    public ResponseEntity<?> findAllGroomer(@RequestBody @Valid GroomerDto groomerDto){
         ResponseEntity<?> response = ResponseEntity.badRequest().body("");
-        DAY.setValue(requestGroomerDto.getDay());
-        SERVICE.setValue(requestGroomerDto.getServiceType());
+        DAY.setValue(groomerDto.getDay());
+        SERVICE.setValue(groomerDto.getServiceType());
         List<Field> allNotBlankFields = findAllNotBlankFields();
         Optional<CommandProvider> requestType = CommandProvider.findRequestType(allNotBlankFields);
         if(requestType.isPresent()){
             CommandProvider commandProvider = requestType.get();
-            CommandRequest command = commandRequestProvider.findCommand(commandProvider);
-            response = command.request();
+            CommandRequestGroomer command = commandRequestProvider.findCommand(commandProvider);
+            response = command.defaultRequest();
         }
         return response;
     }

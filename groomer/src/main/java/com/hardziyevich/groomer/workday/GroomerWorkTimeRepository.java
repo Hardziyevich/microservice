@@ -24,4 +24,7 @@ public interface GroomerWorkTimeRepository extends JpaRepository<GroomerWorkTime
     @Query("SELECT gwt.groomerId FROM GroomerWorkTime gwt WHERE gwt.day=?1")
     List<Long> findALlGroomerIdByWorkingDay(LocalDate day);
 
+    @Query("SELECT gwt.groomerId FROM GroomerWorkTime gwt JOIN gwt.serviceTypes st WHERE gwt.day = ?1 AND st.type = ?2")
+    List<Long> findAllGroomerIdByWorkingDayAndService(LocalDate localDate, String serviceType);
+
 }

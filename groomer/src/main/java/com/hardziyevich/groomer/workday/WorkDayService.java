@@ -12,4 +12,5 @@ public interface WorkDayService {
     List<String> showAllWorkingDayByGroomerId(String groomerId);
     List<String> showAllWorkingDayByGroomerIdAndService(WorkingDayDto dto);
     List<Long> showALlGroomerIdByWorkingDay(String day);
+    List<Long> showAllGroomerIdByWorkingDayAndService(String day, String serviceType);
 }

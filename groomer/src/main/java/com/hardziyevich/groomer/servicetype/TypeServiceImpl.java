@@ -41,4 +41,9 @@ public class TypeServiceImpl implements TypeService {
                 LocalDate.parse(dto.getDay())
         );
     }
+
+    @Override
+    public List<Long> showALlGroomerIdByService(String service) {
+        return serviceTypeRepository.findGroomerIdByService(service);
+    }
 }

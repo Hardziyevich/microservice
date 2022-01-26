@@ -1,9 +1,11 @@
 package com.hardziyevich.groomer.servicetype;
 
 import com.hardziyevich.resource.dto.ServiceDto;
+import com.hardziyevich.resource.validation.DateValidation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +34,11 @@ public class ServiceController {
         } else {
             result.addAll(typeService.showAllServiceByGroomerIdAndDay(request));
         }
-
         return result;
+    }
+
+    @PostMapping("/groomerByService")
+    private List<Long> showAllGroomerId(@RequestBody @NotNull String day) {
+        return typeService.showALlGroomerIdByService(day);
     }
 }

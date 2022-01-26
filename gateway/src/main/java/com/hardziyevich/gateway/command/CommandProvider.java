@@ -4,8 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static com.hardziyevich.gateway.command.Field.DAY;
-import static com.hardziyevich.gateway.command.Field.SERVICE;
+import static com.hardziyevich.gateway.command.Field.*;
 
 public enum CommandProvider {
 
@@ -28,7 +27,13 @@ public enum CommandProvider {
         final String replace = "";
         return fields.stream()
                 .filter(x -> x.equals(field))
-                .map(x -> Optional.ofNullable(x.getValue()).orElse(replace))
+                .map(x -> {
+                    Optional<String> value = Optional.ofNullable(x.getValue());
+                    if(value.isPresent()) {
+                        x.setValue(null);
+                    }
+                    return value.orElse(replace);
+                })
                 .findFirst()
                 .orElse(replace);
     }

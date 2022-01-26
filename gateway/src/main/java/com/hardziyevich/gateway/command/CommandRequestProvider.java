@@ -1,7 +1,9 @@
 package com.hardziyevich.gateway.command;
 
+import com.hardziyevich.gateway.groomer.CommandRequestGroomer;
+
 public interface CommandRequestProvider {
 
-    CommandRequest findCommand(CommandProvider commandProvider);
+    CommandRequestGroomer findCommand(CommandProvider commandProvider);
 
 }

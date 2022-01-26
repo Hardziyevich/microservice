@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -87,6 +86,19 @@ public class FieldTest {
         //when
         String field = commandProvider.getValueFromField(Field.DAY);
         then(field).isEqualTo(result);
+    }
+
+    @Test
+    @DisplayName("Test getValue from Field from different cases")
+    void fetFields() {
+        //given
+        String expect = "test";
+        Field.SERVICE.setValue("test");
+        //when
+        String valueFromField1 = CommandProvider.FIND_SERVICE.getValueFromField(Field.SERVICE);
+        String valueFromField2 = CommandProvider.FIND_SERVICE.getValueFromField(Field.SERVICE);
+        then(valueFromField1).isEqualTo(expect);
+        then(valueFromField2).isEqualTo("");
     }
 
 }
