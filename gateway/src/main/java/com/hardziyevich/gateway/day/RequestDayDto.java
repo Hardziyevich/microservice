@@ -1,6 +1,5 @@
 package com.hardziyevich.gateway.day;
 
-import com.hardziyevich.resource.validation.DateValidation;
 import com.hardziyevich.resource.validation.DigitValidation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class RequestDayDto {
 
-    @DigitValidation
+    @NotNull
     private String groomer;
 
     @NotNull

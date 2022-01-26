@@ -1,6 +1,7 @@
 package com.hardziyevich.gateway.groomer;
 
 import com.hardziyevich.gateway.command.CommandProvider;
+import com.hardziyevich.gateway.command.CommandRequest;
 import com.hardziyevich.gateway.command.CommandRequestProvider;
 import com.hardziyevich.gateway.command.Field;
 import com.hardziyevich.resource.dto.GroomerDto;
@@ -27,15 +28,15 @@ public class GroomerController {
 
     @PostMapping("/find")
     public ResponseEntity<?> findAllGroomer(@RequestBody @Valid GroomerDto groomerDto){
-        ResponseEntity<?> response = ResponseEntity.badRequest().body("");
+        ResponseEntity<?> response = ResponseEntity.badRequest().build();
         DAY.setValue(groomerDto.getDay());
         SERVICE.setValue(groomerDto.getServiceType());
         List<Field> allNotBlankFields = findAllNotBlankFields();
         Optional<CommandProvider> requestType = CommandProvider.findRequestType(allNotBlankFields);
         if(requestType.isPresent()){
             CommandProvider commandProvider = requestType.get();
-            CommandRequestGroomer command = commandRequestProvider.findCommand(commandProvider);
-            response = command.defaultRequest();
+            CommandRequest command = commandRequestProvider.findCommand(commandProvider);
+            response = command.request();
         }
         return response;
     }

@@ -30,6 +30,7 @@ public class GroomerController {
 
     @PostMapping("/findGroomerIdByFirstNameAndLastName")
     public Long showAllGroomerIdByFirstNameAndLastName(@RequestBody @Valid PersonalDataGroomerDto request) {
+        System.out.println(request);
         return groomerService.findGroomerIdByFirstNameAndLastName(request.getFirstName(), request.getLastName())
                 .orElse(0L);
     }

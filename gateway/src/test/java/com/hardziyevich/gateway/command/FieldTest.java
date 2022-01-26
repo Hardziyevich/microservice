@@ -1,7 +1,5 @@
-package com.hardziyevich.gatawey.command;
+package com.hardziyevich.gateway.command;
 
-import com.hardziyevich.gateway.command.Field;
-import com.hardziyevich.gateway.command.CommandProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

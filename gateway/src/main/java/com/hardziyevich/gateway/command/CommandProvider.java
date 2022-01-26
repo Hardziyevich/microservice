@@ -11,6 +11,7 @@ public enum CommandProvider {
     FIND_ALL(List.of()),
     FIND_DAY(List.of(DAY)),
     FIND_SERVICE(List.of(SERVICE)),
+    FIND_GROOMER(List.of(GROOMER)),
     FIND_DAY_AND_SERVICE(List.of(DAY, SERVICE));
 
     private final List<Field> fields;
