@@ -2,13 +2,15 @@ package com.hardziyevich.gateway.groomer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hardziyevich.gateway.command.Field;
-import com.hardziyevich.gateway.groomer.impl.FindAllGroomerBy;
-import com.hardziyevich.gateway.groomer.impl.FindDay;
+import com.hardziyevich.gateway.command.Requester;
+import com.hardziyevich.gateway.command.impl.FindAllGroomerBy;
+import com.hardziyevich.gateway.command.impl.FindDay;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -50,6 +52,7 @@ public class FindAllGroomerByTest {
 
     @BeforeAll
     public void setUp() throws Exception {
+        Field.DAY.setValue(content);
         testDay = new Long[]{1L, 2L};
         String detailsString = objectMapper.writeValueAsString(testDay);
         this.server.expect(requestTo(requestUrlDay + endpointDay))
@@ -68,7 +71,6 @@ public class FindAllGroomerByTest {
     @Test
     void test() {
         //given
-        Field.DAY.setValue(content);
         FindAllGroomerBy findAllGroomerBy = new FindAllGroomerBy(requestUrlGroomer,endpointGroomer);
         findAllGroomerBy.setRequester(findDay);
         //when

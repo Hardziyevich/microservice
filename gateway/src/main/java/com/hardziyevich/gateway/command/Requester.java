@@ -4,9 +4,9 @@ import com.hardziyevich.gateway.command.CommandProvider;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-public interface Requester {
+public interface Requester<T> {
 
-    ResponseEntity<?> request();
+    ResponseEntity<T> request();
 
     CommandProvider showTypeRequest();
 

@@ -1,8 +1,9 @@
-package com.hardziyevich.gateway.groomer.impl;
+package com.hardziyevich.gateway.command.impl;
 
 import com.hardziyevich.gateway.command.CommandProvider;
 import com.hardziyevich.gateway.command.Field;
 import com.hardziyevich.gateway.command.Requester;
+import com.hardziyevich.resource.dto.GroomerDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
@@ -10,25 +11,29 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-public class FindService implements Requester {
+public class FindDayAndService implements Requester<Long[]> {
 
     private final RestTemplate restTemplate;
     private final String requestUrl;
     private final String endpoint;
-    private final CommandProvider commandProvider = CommandProvider.FIND_SERVICE;
+    private final CommandProvider commandProvider = CommandProvider.FIND_DAY_AND_SERVICE;
 
-    public FindService(RestTemplateBuilder builder,
-                                   @Value("${service.groomer.service.url}") String requestUrlService,
-                                   @Value("${endpoint.groomer.by.service}") String endpointService) {
+    public FindDayAndService(RestTemplateBuilder builder,
+                                         @Value("${service.groomer.day.url}") String requestUrlDay,
+                                         @Value("${endpoint.groomer.by.day.and.service}") String endpointDay) {
         this.restTemplate = builder.build();
-        this.requestUrl = requestUrlService;
-        this.endpoint = endpointService;
+        this.requestUrl = requestUrlDay;
+        this.endpoint = endpointDay;
     }
 
     @Override
-    public ResponseEntity<?> request() {
+    public ResponseEntity<Long[]> request() {
+        GroomerDto groomerDto = new GroomerDto(
+                commandProvider.getValueFromField(Field.DAY),
+                commandProvider.getValueFromField(Field.SERVICE)
+        );
         return restTemplate.postForEntity(requestUrl + endpoint,
-                commandProvider.getValueFromField(Field.SERVICE), Long[].class);
+                groomerDto, Long[].class);
     }
 
     @Override
@@ -40,5 +45,4 @@ public class FindService implements Requester {
     public RestTemplate getRestTemplate() {
         return restTemplate;
     }
-
 }

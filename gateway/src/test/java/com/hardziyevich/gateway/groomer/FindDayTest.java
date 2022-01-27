@@ -2,8 +2,7 @@ package com.hardziyevich.gateway.groomer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hardziyevich.gateway.command.Field;
-import com.hardziyevich.gateway.groomer.impl.FindAllGroomerBy;
-import com.hardziyevich.gateway.groomer.impl.FindDay;
+import com.hardziyevich.gateway.command.impl.FindDay;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

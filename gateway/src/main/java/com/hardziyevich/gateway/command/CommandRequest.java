@@ -2,11 +2,11 @@ package com.hardziyevich.gateway.command;
 
 import org.springframework.http.ResponseEntity;
 
-public interface CommandRequest {
+public interface CommandRequest<T> {
 
-    ResponseEntity<?> request();
+    ResponseEntity<String[]> request();
 
     CommandProvider showTypeRequest();
 
-    void setRequester(Requester requester);
+    void setRequester(Requester<T> requester);
 }

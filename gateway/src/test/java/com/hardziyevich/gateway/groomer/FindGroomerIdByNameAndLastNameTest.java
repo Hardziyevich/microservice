@@ -2,8 +2,7 @@ package com.hardziyevich.gateway.groomer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hardziyevich.gateway.command.Field;
-import com.hardziyevich.gateway.groomer.impl.FindGroomerIdByNameAndLastName;
-import com.hardziyevich.gateway.groomer.impl.FindService;
+import com.hardziyevich.gateway.command.impl.FindGroomerIdByNameAndLastName;
 import com.hardziyevich.resource.dto.PersonalDataGroomerDto;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -38,15 +37,15 @@ public class FindGroomerIdByNameAndLastNameTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private Long test;
+    private Long[] test;
 
     @BeforeAll
     public void setUp() throws Exception {
         String firstName = "test";
         String lastName = "test";
-        PersonalDataGroomerDto personalDataGroomerDto = new PersonalDataGroomerDto(firstName,lastName);
+        PersonalDataGroomerDto personalDataGroomerDto = new PersonalDataGroomerDto(firstName, lastName);
         Field.GROOMER.setValue(firstName + " " + lastName);
-        test = 1L;
+        test = new Long[]{1L, 2L};
         String detailsString = objectMapper.writeValueAsString(test);
         String expect = objectMapper.writeValueAsString(personalDataGroomerDto);
         String requestUrl = "/test";
@@ -59,10 +58,9 @@ public class FindGroomerIdByNameAndLastNameTest {
 
     @Test
     void request() {
-        ResponseEntity<?> request = findGroomerIdByNameAndLastName.request();
-        Long body = (Long) request.getBody();
+        ResponseEntity<Long> request = findGroomerIdByNameAndLastName.request();
         then(request.getStatusCode()).isEqualTo(HttpStatus.OK);
-        then(body).isEqualTo(test);
+        then(request.getBody()).isEqualTo(test);
     }
 
 }

@@ -23,11 +23,11 @@ import java.util.Objects;
 @RequestMapping("/service")
 public class ServiceTypeController {
 
-    private final Requester requester;
+    private final Requester<Long> requester;
     private final String serviceUrl;
     private final String endpoint;
 
-    public ServiceTypeController(@Qualifier("findGroomerIdByNameAndLastName") Requester requester,
+    public ServiceTypeController(@Qualifier("findGroomerIdByNameAndLastName") Requester<Long> requester,
                                  @Value("${service.groomer.service.url}") String serviceUrl,
                                  @Value("${endpoint.groomer.find.service}") String endpoint) {
         this.requester = requester;
@@ -38,20 +38,17 @@ public class ServiceTypeController {
     @PostMapping("/find")
     public ResponseEntity<String[]> showAllService(@RequestBody @Valid RequestServiceDto requestServiceDto) {
         boolean groomerIsBlank = requestServiceDto.getGroomer().isBlank();
-        ResponseEntity<String[]> listResponseEntity;
+        ResponseEntity<String[]> responseEntity = ResponseEntity.badRequest().build();
         if (groomerIsBlank) {
-            listResponseEntity = responseToService(requestServiceDto.getGroomer(), requestServiceDto.getDay());
+            responseEntity = responseToService(requestServiceDto.getGroomer(), requestServiceDto.getDay());
         } else {
             Field.GROOMER.setValue(requestServiceDto.getGroomer());
-            ResponseEntity<?> request = requester.request();
-            try {
-                Object body = request.getBody();
-                listResponseEntity = responseToService(Objects.requireNonNull(body).toString(), requestServiceDto.getDay());
-            } catch (NullPointerException e) {
-                return ResponseEntity.badRequest().build();
+            ResponseEntity<Long> request = requester.request();
+            if (request.getStatusCode().is2xxSuccessful() && request.getBody() != null) {
+                responseEntity = responseToService(request.getBody().toString(), requestServiceDto.getDay());
             }
         }
-        return listResponseEntity;
+        return responseEntity;
     }
 
     private ResponseEntity<String[]> responseToService(String groomerId, String day) {
@@ -60,4 +57,5 @@ public class ServiceTypeController {
                 .groomerId(groomerId)
                 .build(), String[].class);
     }
+
 }

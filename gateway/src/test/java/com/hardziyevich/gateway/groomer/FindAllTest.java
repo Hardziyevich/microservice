@@ -1,28 +1,19 @@
 package com.hardziyevich.gateway.groomer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hardziyevich.gateway.groomer.impl.FindAll;
+import com.hardziyevich.gateway.command.impl.FindAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.client.MockRestServiceServer;
-import org.springframework.test.web.client.RequestMatcher;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
 
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;

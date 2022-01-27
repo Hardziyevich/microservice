@@ -5,18 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PersonalDataGroomerDto {
+public class UserOrderTimeManagementDto {
 
-    @NotNull
-    private String firstName;
-
-    @NotNull
-    private String lastName;
+    private LocalDate day;
+    private LocalTime time;
+    private LocalTime duration;
 
 }

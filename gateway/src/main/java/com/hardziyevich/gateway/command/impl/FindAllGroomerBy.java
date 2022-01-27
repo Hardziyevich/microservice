@@ -1,4 +1,4 @@
-package com.hardziyevich.gateway.groomer.impl;
+package com.hardziyevich.gateway.command.impl;
 
 import com.hardziyevich.gateway.command.CommandProvider;
 import com.hardziyevich.gateway.command.CommandRequest;
@@ -7,11 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-public class FindAllGroomerBy implements CommandRequest {
+public class FindAllGroomerBy implements CommandRequest<Long[]>  {
 
     private final String requestUrlGroomer;
     private final String endpointGroomer;
-    private Requester requester;
+    private Requester<Long[]>  requester;
 
     public FindAllGroomerBy(String requestUrlGroomer, String endpointGroomer) {
         this.requestUrlGroomer = requestUrlGroomer;
@@ -19,16 +19,14 @@ public class FindAllGroomerBy implements CommandRequest {
     }
 
     @Override
-    public ResponseEntity<?> request() {
-        ResponseEntity<?> response = requester.request();
-        ResponseEntity<?> result;
+    public ResponseEntity<String[]> request() {
+        ResponseEntity<Long[]> response = requester.request();
+        ResponseEntity<String[]> result = ResponseEntity.badRequest().build();
         HttpStatus statusCode = response.getStatusCode();
-        if (statusCode.is2xxSuccessful() || response.getBody() == null) {
+        if (statusCode.is2xxSuccessful() && response.getBody() != null) {
             RestTemplate restTemplate = requester.getRestTemplate();
             result = restTemplate.postForEntity(requestUrlGroomer + endpointGroomer,
                     response.getBody(), String[].class);
-        } else {
-            result = ResponseEntity.badRequest().body("");
         }
         return result;
     }
@@ -38,7 +36,7 @@ public class FindAllGroomerBy implements CommandRequest {
         return requester.showTypeRequest();
     }
 
-    public void setRequester(Requester requester) {
+    public void setRequester(Requester<Long[]>  requester) {
         this.requester = requester;
     }
 

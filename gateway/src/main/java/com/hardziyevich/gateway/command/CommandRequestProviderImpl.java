@@ -1,4 +1,4 @@
-package com.hardziyevich.gateway.groomer;
+package com.hardziyevich.gateway.command;
 
 import com.hardziyevich.gateway.command.CommandProvider;
 import com.hardziyevich.gateway.command.CommandRequestProvider;

@@ -26,7 +26,7 @@ public enum CommandProvider {
 
     public String getValueFromField(Field field) {
         final String replace = "";
-        return fields.stream()
+        return this.getFields().stream()
                 .filter(x -> x.equals(field))
                 .map(x -> {
                     Optional<String> value = Optional.ofNullable(x.getValue());

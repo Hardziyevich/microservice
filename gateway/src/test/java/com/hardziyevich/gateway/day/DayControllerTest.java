@@ -1,7 +1,7 @@
-package com.hardziyevich.gateway.servicetype;
+package com.hardziyevich.gateway.day;
 
 import com.hardziyevich.gateway.command.impl.FindGroomerIdByNameAndLastName;
-import com.hardziyevich.resource.dto.ServiceDto;
+import com.hardziyevich.resource.dto.WorkingDayDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,14 +27,13 @@ import java.nio.charset.StandardCharsets;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.Mockito.when;
 
-
 @ExtendWith(SpringExtension.class)
 @AutoConfigureJsonTesters
-@WebMvcTest(ServiceTypeController.class)
-public class ServiceTypeControllerTest {
+@WebMvcTest(DayController.class)
+public class DayControllerTest {
 
-    private static final String REST_TEMPLATE_URL = "http://localhost:8081/service/search";
-    private static final String ENDPOINT = "/service" + "/find";
+    private static final String REST_TEMPLATE_URL = "http://localhost:8081/day/search";
+    private static final String ENDPOINT = "/day" + "/find";
 
     @MockBean(name = "findGroomerIdByNameAndLastName")
     private FindGroomerIdByNameAndLastName findGroomerIdByNameAndLastName;
@@ -46,25 +45,24 @@ public class ServiceTypeControllerTest {
     private RestTemplate restTemplate;
 
     @Autowired
-    private JacksonTester<RequestServiceDto> requestDtoJacksonTester;
+    private JacksonTester<RequestDayDto> requestDtoJacksonTester;
 
     @Autowired
     private JacksonTester<String[]> jacksonTester;
 
-    private JsonContent<RequestServiceDto> write;
-    private ServiceDto serviceDto;
-
+    private JsonContent<RequestDayDto> write;
+    private WorkingDayDto workingDayDto;
 
     @BeforeEach
     void init() throws IOException {
         String groomer = "test test";
-        String day = "";
+        String service = "";
         String groomerId = "1";
-        RequestServiceDto requestServiceDto = new RequestServiceDto(groomer, day);
-        write = requestDtoJacksonTester.write(requestServiceDto);
-        serviceDto = ServiceDto.builder()
+        RequestDayDto requestDayDto = new RequestDayDto(groomer, service);
+        write = requestDtoJacksonTester.write(requestDayDto);
+        workingDayDto = WorkingDayDto.builder()
                 .groomerId(groomerId)
-                .day(day)
+                .serviceType(service)
                 .build();
     }
 
@@ -77,7 +75,7 @@ public class ServiceTypeControllerTest {
         ResponseEntity<String[]> ok = ResponseEntity.ok(bodyResponse);
         when(findGroomerIdByNameAndLastName.getRestTemplate()).thenReturn(restTemplate);
         when(findGroomerIdByNameAndLastName.request()).thenReturn(longResponseEntity);
-        when(restTemplate.postForEntity(REST_TEMPLATE_URL, serviceDto, String[].class))
+        when(restTemplate.postForEntity(REST_TEMPLATE_URL, workingDayDto, String[].class))
                 .thenReturn(ok);
         MockHttpServletResponse response = mvc.perform(
                 MockMvcRequestBuilders.post(ENDPOINT)

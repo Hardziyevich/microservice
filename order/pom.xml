@@ -48,7 +48,11 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>com.hardziyevich</groupId>
+            <artifactId>resource</artifactId>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>

@@ -2,7 +2,7 @@ package com.hardziyevich.gateway.groomer;
 
 import com.hardziyevich.gateway.command.CommandRequest;
 import com.hardziyevich.gateway.command.Requester;
-import com.hardziyevich.gateway.groomer.impl.FindAllGroomerBy;
+import com.hardziyevich.gateway.command.impl.FindAllGroomerBy;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

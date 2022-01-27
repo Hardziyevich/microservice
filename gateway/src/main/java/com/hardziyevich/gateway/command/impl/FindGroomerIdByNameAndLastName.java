@@ -1,4 +1,4 @@
-package com.hardziyevich.gateway.groomer.impl;
+package com.hardziyevich.gateway.command.impl;
 
 import com.hardziyevich.gateway.command.CommandProvider;
 import com.hardziyevich.gateway.command.Field;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-public class FindGroomerIdByNameAndLastName implements Requester {
+public class FindGroomerIdByNameAndLastName implements Requester<Long> {
 
     private final RestTemplate restTemplate;
     private final String requestUrl;
@@ -27,7 +27,7 @@ public class FindGroomerIdByNameAndLastName implements Requester {
     }
 
     @Override
-    public ResponseEntity<?> request() {
+    public ResponseEntity<Long> request() {
         String valueFromField = commandProvider.getValueFromField(Field.GROOMER);
         String[] initials = valueFromField.split(" ");
         String firstName = initials[0];

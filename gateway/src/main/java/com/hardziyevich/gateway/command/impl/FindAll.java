@@ -1,4 +1,4 @@
-package com.hardziyevich.gateway.groomer.impl;
+package com.hardziyevich.gateway.command.impl;
 
 import com.hardziyevich.gateway.command.CommandProvider;
 import com.hardziyevich.gateway.command.CommandRequest;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-public class FindAll implements CommandRequest {
+public class FindAll implements CommandRequest<String[]> {
 
     private final RestTemplate restTemplate;
     private final String requestUrl;
@@ -26,7 +26,7 @@ public class FindAll implements CommandRequest {
     }
 
     @Override
-    public ResponseEntity<?> request() {
+    public ResponseEntity<String[]> request() {
         return restTemplate.postForEntity(requestUrl + endpointGroomer,
                 "", String[].class);
     }
@@ -37,7 +37,7 @@ public class FindAll implements CommandRequest {
     }
 
     @Override
-    public void setRequester(Requester requester) {
+    public void setRequester(Requester<String[]> requester) {
 
     }
 }

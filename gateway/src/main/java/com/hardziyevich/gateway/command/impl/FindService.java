@@ -1,4 +1,4 @@
-package com.hardziyevich.gateway.groomer.impl;
+package com.hardziyevich.gateway.command.impl;
 
 import com.hardziyevich.gateway.command.CommandProvider;
 import com.hardziyevich.gateway.command.Field;
@@ -10,25 +10,25 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-public class FindDay implements Requester {
+public class FindService implements Requester<Long[]> {
 
     private final RestTemplate restTemplate;
     private final String requestUrl;
     private final String endpoint;
-    private final CommandProvider commandProvider = CommandProvider.FIND_DAY;
+    private final CommandProvider commandProvider = CommandProvider.FIND_SERVICE;
 
-    public FindDay(RestTemplateBuilder builder,
-                               @Value("${service.groomer.day.url}") String requestUrlDay,
-                               @Value("${endpoint.groomer.by.day}") String endpointDay) {
+    public FindService(RestTemplateBuilder builder,
+                                   @Value("${service.groomer.service.url}") String requestUrlService,
+                                   @Value("${endpoint.groomer.by.service}") String endpointService) {
         this.restTemplate = builder.build();
-        this.requestUrl = requestUrlDay;
-        this.endpoint = endpointDay;
+        this.requestUrl = requestUrlService;
+        this.endpoint = endpointService;
     }
 
     @Override
-    public ResponseEntity<?> request() {
+    public ResponseEntity<Long[]> request() {
         return restTemplate.postForEntity(requestUrl + endpoint,
-                commandProvider.getValueFromField(Field.DAY), Long[].class);
+                commandProvider.getValueFromField(Field.SERVICE), Long[].class);
     }
 
     @Override
