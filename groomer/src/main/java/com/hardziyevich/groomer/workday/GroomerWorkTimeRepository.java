@@ -6,8 +6,9 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
-public interface GroomerWorkTimeRepository extends JpaRepository<GroomerWorkTime,Long> {
+public interface GroomerWorkTimeRepository extends JpaRepository<GroomerWorkTime, Long> {
 
     @Query("SELECT DISTINCT gwt.day FROM GroomerWorkTime gwt ORDER BY gwt.day ASC")
     List<LocalDate> findDistinctDay();
@@ -26,5 +27,8 @@ public interface GroomerWorkTimeRepository extends JpaRepository<GroomerWorkTime
 
     @Query("SELECT gwt.groomerId FROM GroomerWorkTime gwt JOIN gwt.serviceTypes st WHERE gwt.day = ?1 AND st.type = ?2")
     List<Long> findAllGroomerIdByWorkingDayAndService(LocalDate localDate, String serviceType);
+
+    @Query("SELECT gwt FROM GroomerWorkTime gwt JOIN gwt.serviceTypes st WHERE gwt.groomerId = ?1 AND gwt.day = ?2 AND st.type=?3")
+    Optional<GroomerWorkTime> findGroomerWorkTimeByGroomerIdAndDayAndTypeService(Long groomerId, LocalDate day, String serviceType);
 
 }

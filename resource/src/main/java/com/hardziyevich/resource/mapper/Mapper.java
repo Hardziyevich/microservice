@@ -1,4 +1,4 @@
-package com.hardziyevich.order.userorder;
+package com.hardziyevich.resource.mapper;
 
 public interface Mapper<T,V> {
 

@@ -1,7 +1,6 @@
 package com.hardziyevich.gateway.servicetype;
 
 import com.hardziyevich.gateway.command.impl.FindGroomerIdByNameAndLastName;
-import com.hardziyevich.resource.dto.ServiceDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,13 +45,13 @@ public class ServiceTypeControllerTest {
     private RestTemplate restTemplate;
 
     @Autowired
-    private JacksonTester<RequestServiceDto> requestDtoJacksonTester;
+    private JacksonTester<ServiceDto> requestDtoJacksonTester;
 
     @Autowired
     private JacksonTester<String[]> jacksonTester;
 
-    private JsonContent<RequestServiceDto> write;
-    private ServiceDto serviceDto;
+    private JsonContent<ServiceDto> write;
+    private com.hardziyevich.resource.dto.ServiceDto serviceDto;
 
 
     @BeforeEach
@@ -60,9 +59,9 @@ public class ServiceTypeControllerTest {
         String groomer = "test test";
         String day = "";
         String groomerId = "1";
-        RequestServiceDto requestServiceDto = new RequestServiceDto(groomer, day);
-        write = requestDtoJacksonTester.write(requestServiceDto);
-        serviceDto = ServiceDto.builder()
+        ServiceDto serviceDto = new ServiceDto(groomer, day);
+        write = requestDtoJacksonTester.write(serviceDto);
+        this.serviceDto = com.hardziyevich.resource.dto.ServiceDto.builder()
                 .groomerId(groomerId)
                 .day(day)
                 .build();

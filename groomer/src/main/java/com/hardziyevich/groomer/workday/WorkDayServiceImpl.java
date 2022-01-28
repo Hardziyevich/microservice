@@ -1,10 +1,17 @@
 package com.hardziyevich.groomer.workday;
 
+import com.hardziyevich.groomer.entity.GroomerWorkTime;
+import com.hardziyevich.resource.dto.RequestWorkingTimeDto;
+import com.hardziyevich.resource.dto.ResponseWorkingTimeDto;
 import com.hardziyevich.resource.dto.WorkingDayDto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class WorkDayServiceImpl implements WorkDayService {
@@ -53,6 +60,17 @@ public class WorkDayServiceImpl implements WorkDayService {
 
     @Override
     public List<Long> showAllGroomerIdByWorkingDayAndService(String day, String serviceType) {
-        return groomerWorkTimeRepository.findAllGroomerIdByWorkingDayAndService(LocalDate.parse(day),serviceType);
+        return groomerWorkTimeRepository.findAllGroomerIdByWorkingDayAndService(LocalDate.parse(day), serviceType);
+    }
+
+    @Override
+    public ResponseEntity<ResponseWorkingTimeDto> findWorkingTime(RequestWorkingTimeDto dto) {
+        Optional<GroomerWorkTime> response = groomerWorkTimeRepository.findGroomerWorkTimeByGroomerIdAndDayAndTypeService(
+                Long.parseLong(dto.getGroomerId()),
+                LocalDate.parse(dto.getDay()),
+                dto.getServiceType()
+        );
+        return response.map(groomerWorkTime -> ResponseEntity.ok(new GroomerWorkTimeToResponseWorkingTimeDto().mapTo(groomerWorkTime)))
+                .orElseGet(() -> ResponseEntity.ok().body(ResponseWorkingTimeDto.builder().build()));
     }
 }

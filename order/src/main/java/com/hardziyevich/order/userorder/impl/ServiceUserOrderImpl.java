@@ -1,10 +1,10 @@
 package com.hardziyevich.order.userorder.impl;
 
 import com.hardziyevich.order.entity.UserOrder;
-import com.hardziyevich.order.userorder.Mapper;
 import com.hardziyevich.order.userorder.ServiceUserOrder;
 import com.hardziyevich.order.userorder.UserOrderRepository;
 import com.hardziyevich.resource.dto.UserOrderTimeManagementDto;
+import com.hardziyevich.resource.mapper.Mapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
