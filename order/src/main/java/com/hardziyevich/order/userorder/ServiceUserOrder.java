@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ServiceUserOrder {
 
-    List<UserOrderTimeManagementDto> findDurationOrders(String groomerId);
+    List<UserOrderTimeManagementDto> findDurationAndTimeOrders(String groomerId, String day);
 }

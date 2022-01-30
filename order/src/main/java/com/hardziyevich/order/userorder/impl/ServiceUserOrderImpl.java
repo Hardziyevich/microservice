@@ -7,6 +7,7 @@ import com.hardziyevich.resource.dto.UserOrderTimeManagementDto;
 import com.hardziyevich.resource.mapper.Mapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -21,8 +22,8 @@ public class ServiceUserOrderImpl implements ServiceUserOrder {
     }
 
     @Override
-    public List<UserOrderTimeManagementDto> findDurationOrders(String groomerId) {
-        return userOrderRepository.findUserOrderByGroomerId(Long.parseLong(groomerId)).stream()
+    public List<UserOrderTimeManagementDto> findDurationAndTimeOrders(String groomerId, String day) {
+        return userOrderRepository.findUserOrderByGroomerIdAndDay(Long.parseLong(groomerId),LocalDate.parse(day)).stream()
                 .map(mapper::mapTo).toList();
     }
 

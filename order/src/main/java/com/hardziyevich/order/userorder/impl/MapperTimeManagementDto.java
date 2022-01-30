@@ -1,8 +1,8 @@
 package com.hardziyevich.order.userorder.impl;
 
 import com.hardziyevich.order.entity.UserOrder;
-import com.hardziyevich.order.userorder.Mapper;
 import com.hardziyevich.resource.dto.UserOrderTimeManagementDto;
+import com.hardziyevich.resource.mapper.Mapper;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,7 +12,6 @@ public class MapperTimeManagementDto implements Mapper<UserOrderTimeManagementDt
     @Override
     public UserOrderTimeManagementDto mapTo(UserOrder userOrder) {
         return UserOrderTimeManagementDto.builder()
-                .day(userOrder.getDay())
                 .time(userOrder.getTime())
                 .duration(userOrder.getDuration())
                 .build();

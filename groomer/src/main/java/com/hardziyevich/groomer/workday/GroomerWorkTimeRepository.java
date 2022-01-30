@@ -13,7 +13,7 @@ public interface GroomerWorkTimeRepository extends JpaRepository<GroomerWorkTime
     @Query("SELECT DISTINCT gwt.day FROM GroomerWorkTime gwt ORDER BY gwt.day ASC")
     List<LocalDate> findDistinctDay();
 
-    @Query("SELECT gwt.day FROM GroomerWorkTime gwt JOIN gwt.serviceTypes st WHERE st.type = ?1 ORDER BY gwt.day ASC")
+    @Query("SELECT DISTINCT gwt.day FROM GroomerWorkTime gwt JOIN gwt.serviceTypes st WHERE st.type = ?1 ORDER BY gwt.day ASC")
     List<LocalDate> findGroomerWorkTimeByServiceType(String serviceType);
 
     @Query("SELECT DISTINCT gwt.day FROM GroomerWorkTime gwt WHERE gwt.groomerId = ?1 ORDER BY gwt.day ASC")

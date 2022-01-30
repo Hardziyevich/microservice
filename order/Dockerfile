@@ -1,5 +1,5 @@
 FROM adoptopenjdk/openjdk16:ubi
-ARG JAR_FILE=target/gateway-0.0.1-SNAPSHOT.jar
+ARG JAR_FILE=target/order-0.0.1-SNAPSHOT.jar
 ADD ${JAR_FILE} app.jar
 WORKDIR /
 ENTRYPOINT ["java","-jar","app.jar"]

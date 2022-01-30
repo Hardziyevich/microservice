@@ -18,4 +18,6 @@ public class ResponseWorkingTimeDto {
 
     private LocalTime endWork;
 
+    private LocalTime duration;
+
 }

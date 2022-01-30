@@ -37,7 +37,7 @@ public class FindGroomerIdByNameAndLastNameTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private Long[] test;
+    private Long test;
 
     @BeforeAll
     public void setUp() throws Exception {
@@ -45,7 +45,7 @@ public class FindGroomerIdByNameAndLastNameTest {
         String lastName = "test";
         PersonalDataGroomerDto personalDataGroomerDto = new PersonalDataGroomerDto(firstName, lastName);
         Field.GROOMER.setValue(firstName + " " + lastName);
-        test = new Long[]{1L, 2L};
+        test = 1L;
         String detailsString = objectMapper.writeValueAsString(test);
         String expect = objectMapper.writeValueAsString(personalDataGroomerDto);
         String requestUrl = "/test";

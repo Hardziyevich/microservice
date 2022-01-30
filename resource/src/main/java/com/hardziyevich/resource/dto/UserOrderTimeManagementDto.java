@@ -14,7 +14,6 @@ import java.time.LocalTime;
 @NoArgsConstructor
 public class UserOrderTimeManagementDto {
 
-    private LocalDate day;
     private LocalTime time;
     private LocalTime duration;
 

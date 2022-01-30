@@ -1,5 +1,6 @@
 package com.hardziyevich.user.groomer;
 
+import com.hardziyevich.user.entity.Role;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class GroomerServiceImpl implements GroomerService {
     @Override
     public List<String> findALlGroomers() {
         return userRepository.findAll().stream()
+                .filter(u -> u.getRole().equals(Role.GROOMER))
                 .map(u -> String.join(DELIMITER, u.getFirstName(), u.getLastName()))
                 .toList();
     }
@@ -32,7 +34,7 @@ public class GroomerServiceImpl implements GroomerService {
 
     @Override
     public Optional<Long> findGroomerIdByFirstNameAndLastName(String firstName, String lastName) {
-        return userRepository.findUserIdByFirstNameAndLastName(firstName, lastName);
+        return userRepository.findUserIdByFirstNameAndLastName(firstName, lastName, Role.GROOMER);
     }
 
 }

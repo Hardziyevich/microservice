@@ -15,6 +15,6 @@ CREATE TABLE IF NOT EXISTS user_order.user_orders
 INSERT INTO user_order.user_orders(user_id, groomer_id, pet_name, service_type, day, time, duration)
 VALUES ('4','1','pet1','washing','2022-01-15','09:15','00:30'),
        ('5','1','pet1','washing','2022-01-15','11:15','00:30'),
-       ('6','1','pet1','washing','2022-01-15','14:15','00:30');
+       ('6','1','pet1','washing','2022-01-15','13:15','00:30');
 
 DROP TABLE user_order.user_orders;

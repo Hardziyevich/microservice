@@ -11,6 +11,7 @@ public class GroomerWorkTimeToResponseWorkingTimeDto implements Mapper<ResponseW
         return ResponseWorkingTimeDto.builder()
                 .startWork(groomerWorkTime.getStartWork())
                 .endWork(groomerWorkTime.getEndWork())
+                .duration(groomerWorkTime.getServiceTypes().getDuration())
                 .build();
     }
 

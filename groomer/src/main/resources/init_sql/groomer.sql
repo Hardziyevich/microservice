@@ -36,5 +36,5 @@ VALUES (1,1,'2022-01-15', '09:00', '14:00'),
        (3,2,'2022-01-16', '09:00', '14:00'),
        (2,2,'2022-01-19', '09:00', '14:00');
 
-DROP TABLE groomer.groomer_work_times;
-DROP TABLE groomer.service_types;
+-- DROP TABLE groomer.groomer_work_times;
+-- DROP TABLE groomer.service_types;
