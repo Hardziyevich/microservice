@@ -3,7 +3,7 @@ package com.hardziyevich.gateway.groomer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hardziyevich.gateway.command.Field;
 import com.hardziyevich.gateway.command.impl.FindDayAndService;
-import com.hardziyevich.resource.dto.GroomerDto;
+import com.hardziyevich.resource.dto.RequestToGroomerForWorkingDayDto;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -45,10 +45,10 @@ public class FindDayAndServiceTest {
         String service = "service";
         Field.DAY.setValue(day);
         Field.SERVICE.setValue(service);
-        GroomerDto groomerDto = new GroomerDto(day,service);
+        RequestToGroomerForWorkingDayDto requestToGroomerForWorkingDayDto = new RequestToGroomerForWorkingDayDto(day,service);
         test = new Long[]{1L, 2L};
         String detailsString = objectMapper.writeValueAsString(test);
-        String expect = objectMapper.writeValueAsString(groomerDto);
+        String expect = objectMapper.writeValueAsString(requestToGroomerForWorkingDayDto);
         String requestUrl = "/test";
         String endpointGroomer = "/test";
         this.server.expect(requestTo(requestUrl + endpointGroomer))

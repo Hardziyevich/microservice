@@ -4,7 +4,7 @@ import com.hardziyevich.gateway.command.CommandProvider;
 import com.hardziyevich.gateway.command.CommandRequest;
 import com.hardziyevich.gateway.command.CommandRequestProvider;
 import com.hardziyevich.gateway.command.Field;
-import com.hardziyevich.resource.dto.GroomerDto;
+import com.hardziyevich.resource.dto.RequestToGroomerForWorkingDayDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,10 +27,10 @@ public class GroomerController {
     }
 
     @PostMapping("/find")
-    public ResponseEntity<?> findAllGroomer(@RequestBody @Valid GroomerDto groomerDto){
+    public ResponseEntity<?> findAllGroomer(@RequestBody @Valid RequestToGroomerForWorkingDayDto requestToGroomerForWorkingDayDto){
         ResponseEntity<?> response = ResponseEntity.badRequest().build();
-        DAY.setValue(groomerDto.getDay());
-        SERVICE.setValue(groomerDto.getServiceType());
+        DAY.setValue(requestToGroomerForWorkingDayDto.getDay());
+        SERVICE.setValue(requestToGroomerForWorkingDayDto.getServiceType());
         List<Field> allNotBlankFields = findAllNotBlankFields();
         Optional<CommandProvider> requestType = CommandProvider.findRequestType(allNotBlankFields);
         if(requestType.isPresent()){

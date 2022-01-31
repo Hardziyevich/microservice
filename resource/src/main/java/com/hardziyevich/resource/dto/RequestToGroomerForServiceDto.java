@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class UserOrderDto {
+@NoArgsConstructor
+public class RequestToGroomerForServiceDto {
 
     @DigitValidation
     private String groomerId;

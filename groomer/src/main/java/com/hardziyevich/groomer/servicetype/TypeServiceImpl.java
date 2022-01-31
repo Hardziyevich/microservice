@@ -1,7 +1,7 @@
 package com.hardziyevich.groomer.servicetype;
 
 import com.hardziyevich.groomer.entity.ServiceType;
-import com.hardziyevich.resource.dto.ServiceDto;
+import com.hardziyevich.resource.dto.RequestToGroomerForServiceDto;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -35,7 +35,7 @@ public class TypeServiceImpl implements TypeService {
     }
 
     @Override
-    public List<String> showAllServiceByGroomerIdAndDay(ServiceDto dto) {
+    public List<String> showAllServiceByGroomerIdAndDay(RequestToGroomerForServiceDto dto) {
         return serviceTypeRepository.findServiceTypeByGroomerIdAndDay(
                 Long.parseLong(dto.getGroomerId()),
                 LocalDate.parse(dto.getDay())

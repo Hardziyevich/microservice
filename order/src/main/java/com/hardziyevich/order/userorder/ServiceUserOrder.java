@@ -1,10 +1,13 @@
 package com.hardziyevich.order.userorder;
 
-import com.hardziyevich.resource.dto.UserOrderTimeManagementDto;
+import com.hardziyevich.resource.dto.RequestToOrderForRegistrationOrderDto;
+import com.hardziyevich.resource.dto.ResponseFromUserOrderTimeManagementDto;
 
 import java.util.List;
 
 public interface ServiceUserOrder {
 
-    List<UserOrderTimeManagementDto> findDurationAndTimeOrders(String groomerId, String day);
+    List<ResponseFromUserOrderTimeManagementDto> findDurationAndTimeOrders(String groomerId, String day);
+
+    Long saveOrder(RequestToOrderForRegistrationOrderDto request);
 }

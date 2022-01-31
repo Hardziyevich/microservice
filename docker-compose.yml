@@ -8,8 +8,6 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
-    ports:
-      - "6323:5432"
     volumes:
       - ./resource/src/main/resources/initdb:/docker-entrypoint-initdb.d
   groomer:
@@ -34,15 +32,35 @@ services:
       - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
       - SERVER_PORT=${USER_PORT}
     restart: always
+  order:
+    container_name: order
+    image: 'order:order'
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+      - SERVER_PORT=${ORDER_PORT}
+    restart: always
   gateway:
     container_name: gateway
     image: 'gateway:gateway'
     depends_on:
       - groomer
       - user
+      - order
     environment:
       - SERVICE_GROOMER_SERVICE_URL=${SERVICE_GROOMER_SERVICE_URL}
       - SERVICE_GROOMER_DAY_URL=${SERVICE_GROOMER_DAY_URL}
       - SERVICE_USER_GROOMER_URL=${SERVICE_USER_GROOMER_URL}
+      - SERVICE_USERORDER_ORDER_URL=${SERVICE_USERORDER_ORDER_URL}
     ports:
       - "8000:8000"
+  api:
+    container_name: api
+    image: 'challenges-frontend:1.0'
+    ports:
+      - "3000:80"
+    depends_on:
+      - gateway

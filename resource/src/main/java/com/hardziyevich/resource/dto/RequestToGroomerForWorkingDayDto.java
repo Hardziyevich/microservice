@@ -1,23 +1,23 @@
 package com.hardziyevich.resource.dto;
 
+import com.hardziyevich.resource.validation.DateValidation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalTime;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class ResponseWorkingTimeDto {
+@AllArgsConstructor
+public class RequestToGroomerForWorkingDayDto {
 
-    private LocalTime startWork;
+    @DateValidation
+    private String day;
 
-    private LocalTime endWork;
-
-    private LocalTime duration;
+    @NotNull
+    private String serviceType;
 
 }

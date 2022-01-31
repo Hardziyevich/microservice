@@ -1,6 +1,7 @@
 package com.hardziyevich.user.groomer;
 
 import com.hardziyevich.user.entity.Role;
+import com.hardziyevich.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

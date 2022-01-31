@@ -20,5 +20,5 @@ VALUES ('alex', 'ivanov', 'alex@gmail.com', '123343', 'GROOMER'),
        ('user3','user3','user3@gmail.com','123456','USER'),
        ('user4','user4','user4@gmail.com','123456','USER');
 
--- DROP SCHEMA user_scheme;
 -- DROP TABLE user_scheme.users;
+-- DROP SCHEMA user_scheme;

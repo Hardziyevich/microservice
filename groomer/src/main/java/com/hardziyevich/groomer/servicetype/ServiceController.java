@@ -1,6 +1,6 @@
 package com.hardziyevich.groomer.servicetype;
 
-import com.hardziyevich.resource.dto.ServiceDto;
+import com.hardziyevich.resource.dto.RequestToGroomerForServiceDto;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,7 +19,7 @@ public class ServiceController {
     }
 
     @PostMapping("/search")
-    public List<String> searchByNothingOrDay(@RequestBody @Valid ServiceDto request) {
+    public List<String> searchByNothingOrDay(@RequestBody @Valid RequestToGroomerForServiceDto request) {
         List<String> result = new ArrayList<>();
         boolean groomerIsBlank = request.getGroomerId().isBlank();
         boolean dayIsBlank = request.getDay().isBlank();

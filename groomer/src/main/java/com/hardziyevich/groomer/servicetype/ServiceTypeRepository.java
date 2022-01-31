@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ServiceTypeRepository extends JpaRepository<ServiceType,Long> {
 
-    @Query("SELECT st.type FROM ServiceType st JOIN st.groomerWorkTimes gwt WHERE gwt.day =?1")
+    @Query("SELECT DISTINCT st.type FROM ServiceType st JOIN st.groomerWorkTimes gwt WHERE gwt.day =?1")
     List<String> findServiceTypeByGroomerWorkTimesDay(LocalDate day);
 
     @Query("SELECT DISTINCT st.type FROM ServiceType st JOIN st.groomerWorkTimes gwt WHERE gwt.groomerId =?1")

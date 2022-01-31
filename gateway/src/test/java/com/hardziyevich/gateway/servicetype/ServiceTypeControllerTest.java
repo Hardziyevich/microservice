@@ -1,6 +1,7 @@
 package com.hardziyevich.gateway.servicetype;
 
 import com.hardziyevich.gateway.command.impl.FindGroomerIdByNameAndLastName;
+import com.hardziyevich.resource.dto.RequestToGroomerForServiceDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -51,7 +52,7 @@ public class ServiceTypeControllerTest {
     private JacksonTester<String[]> jacksonTester;
 
     private JsonContent<ServiceDto> write;
-    private com.hardziyevich.resource.dto.ServiceDto serviceDto;
+    private RequestToGroomerForServiceDto requestToGroomerForServiceDto;
 
 
     @BeforeEach
@@ -61,7 +62,7 @@ public class ServiceTypeControllerTest {
         String groomerId = "1";
         ServiceDto serviceDto = new ServiceDto(groomer, day);
         write = requestDtoJacksonTester.write(serviceDto);
-        this.serviceDto = com.hardziyevich.resource.dto.ServiceDto.builder()
+        this.requestToGroomerForServiceDto = RequestToGroomerForServiceDto.builder()
                 .groomerId(groomerId)
                 .day(day)
                 .build();
@@ -76,7 +77,7 @@ public class ServiceTypeControllerTest {
         ResponseEntity<String[]> ok = ResponseEntity.ok(bodyResponse);
         when(findGroomerIdByNameAndLastName.getRestTemplate()).thenReturn(restTemplate);
         when(findGroomerIdByNameAndLastName.request()).thenReturn(longResponseEntity);
-        when(restTemplate.postForEntity(REST_TEMPLATE_URL, serviceDto, String[].class))
+        when(restTemplate.postForEntity(REST_TEMPLATE_URL, requestToGroomerForServiceDto, String[].class))
                 .thenReturn(ok);
         MockHttpServletResponse response = mvc.perform(
                 MockMvcRequestBuilders.post(ENDPOINT)

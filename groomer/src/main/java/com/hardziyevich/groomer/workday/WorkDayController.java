@@ -1,8 +1,8 @@
 package com.hardziyevich.groomer.workday;
 
-import com.hardziyevich.resource.dto.GroomerDto;
-import com.hardziyevich.resource.dto.RequestWorkingTimeDto;
-import com.hardziyevich.resource.dto.ResponseWorkingTimeDto;
+import com.hardziyevich.resource.dto.RequestToGroomerForWorkingDayDto;
+import com.hardziyevich.resource.dto.RequestToGroomerForWorkingTimeDto;
+import com.hardziyevich.resource.dto.ResponseFromGroomerForWorkingTimeDto;
 import com.hardziyevich.resource.dto.WorkingDayDto;
 import com.hardziyevich.resource.validation.DateValidation;
 import org.springframework.http.ResponseEntity;
@@ -50,12 +50,12 @@ public class WorkDayController {
     }
 
     @PostMapping("/groomerByDayAndService")
-    private List<Long> showAllGroomerId(@RequestBody @Valid GroomerDto request) {
+    private List<Long> showAllGroomerId(@RequestBody @Valid RequestToGroomerForWorkingDayDto request) {
         return workDayService.showAllGroomerIdByWorkingDayAndService(request.getDay(),request.getServiceType());
     }
 
     @PostMapping("/findWorkingTime")
-    private ResponseEntity<ResponseWorkingTimeDto> findWorkingTime(@RequestBody @Valid RequestWorkingTimeDto dto){
+    private ResponseEntity<ResponseFromGroomerForWorkingTimeDto> findWorkingTime(@RequestBody @Valid RequestToGroomerForWorkingTimeDto dto){
         return workDayService.findWorkingTime(dto);
     }
 

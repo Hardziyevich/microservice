@@ -3,7 +3,7 @@ package com.hardziyevich.gateway.command.impl;
 import com.hardziyevich.gateway.command.CommandProvider;
 import com.hardziyevich.gateway.command.Field;
 import com.hardziyevich.gateway.command.Requester;
-import com.hardziyevich.resource.dto.GroomerDto;
+import com.hardziyevich.resource.dto.RequestToGroomerForWorkingDayDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
@@ -28,12 +28,12 @@ public class FindDayAndService implements Requester<Long[]> {
 
     @Override
     public ResponseEntity<Long[]> request() {
-        GroomerDto groomerDto = new GroomerDto(
+        RequestToGroomerForWorkingDayDto requestToGroomerForWorkingDayDto = new RequestToGroomerForWorkingDayDto(
                 commandProvider.getValueFromField(Field.DAY),
                 commandProvider.getValueFromField(Field.SERVICE)
         );
         return restTemplate.postForEntity(requestUrl + endpoint,
-                groomerDto, Long[].class);
+                requestToGroomerForWorkingDayDto, Long[].class);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.hardziyevich.gateway.servicetype;
 
 import com.hardziyevich.gateway.command.Field;
 import com.hardziyevich.gateway.command.Requester;
+import com.hardziyevich.resource.dto.RequestToGroomerForServiceDto;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +46,7 @@ public class ServiceTypeController {
     }
 
     private ResponseEntity<String[]> responseToService(String groomerId, String day) {
-        return requester.getRestTemplate().postForEntity(serviceUrl + endpoint, com.hardziyevich.resource.dto.ServiceDto.builder()
+        return requester.getRestTemplate().postForEntity(serviceUrl + endpoint, RequestToGroomerForServiceDto.builder()
                 .day(day)
                 .groomerId(groomerId)
                 .build(), String[].class);

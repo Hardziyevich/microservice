@@ -2,10 +2,10 @@ package com.hardziyevich.gateway.time;
 
 import com.hardziyevich.gateway.command.Field;
 import com.hardziyevich.gateway.command.Requester;
-import com.hardziyevich.resource.dto.RequestWorkingTimeDto;
-import com.hardziyevich.resource.dto.ResponseWorkingTimeDto;
-import com.hardziyevich.resource.dto.UserOrderDto;
-import com.hardziyevich.resource.dto.UserOrderTimeManagementDto;
+import com.hardziyevich.resource.dto.RequestToGroomerForWorkingTimeDto;
+import com.hardziyevich.resource.dto.ResponseFromGroomerForWorkingTimeDto;
+import com.hardziyevich.resource.dto.RequestToOrderForTimeManagementDto;
+import com.hardziyevich.resource.dto.ResponseFromUserOrderTimeManagementDto;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiFunction;
-import java.util.stream.Stream;
 
 @Service
 public class TimeServiceImpl implements TimeService {
@@ -44,10 +43,10 @@ public class TimeServiceImpl implements TimeService {
         Field.GROOMER.setValue(timeDto.getGroomer());
         ResponseEntity<List<String>> response = ResponseEntity.badRequest().build();
         ResponseEntity<Long> request = requester.request();
-        ResponseEntity<ResponseWorkingTimeDto> durationWorkingTimeForGroomer = findDurationWorkingTimeForGroomer(request, timeDto);
-        ResponseEntity<UserOrderTimeManagementDto[]> busyTimeForGroomer = findBusyTimeForGroomer(request, timeDto);
+        ResponseEntity<ResponseFromGroomerForWorkingTimeDto> durationWorkingTimeForGroomer = findDurationWorkingTimeForGroomer(request, timeDto);
+        ResponseEntity<ResponseFromUserOrderTimeManagementDto[]> busyTimeForGroomer = findBusyTimeForGroomer(request, timeDto);
         if (checkResponse(durationWorkingTimeForGroomer, busyTimeForGroomer)) {
-            ResponseWorkingTimeDto workingTImeForGroomer = durationWorkingTimeForGroomer.getBody();
+            ResponseFromGroomerForWorkingTimeDto workingTImeForGroomer = durationWorkingTimeForGroomer.getBody();
             List<PeriodOrder> busyOrders = busyGroomerTime(busyTimeForGroomer);
             List<PeriodOrder> allTimePeriod = createFreeTimePeriod(
                     workingTImeForGroomer.getStartWork(),
@@ -63,46 +62,46 @@ public class TimeServiceImpl implements TimeService {
         return response;
     }
 
-    private ResponseEntity<ResponseWorkingTimeDto> findDurationWorkingTimeForGroomer(ResponseEntity<Long> request, TimeDto timeDto) {
-        ResponseEntity<ResponseWorkingTimeDto> response = ResponseEntity.badRequest().build();
+    private ResponseEntity<ResponseFromGroomerForWorkingTimeDto> findDurationWorkingTimeForGroomer(ResponseEntity<Long> request, TimeDto timeDto) {
+        ResponseEntity<ResponseFromGroomerForWorkingTimeDto> response = ResponseEntity.badRequest().build();
         if (request.getStatusCode().is2xxSuccessful() && request.getBody() != null) {
-            RequestWorkingTimeDto requestToGroomer = RequestWorkingTimeDto.builder()
+            RequestToGroomerForWorkingTimeDto requestToGroomer = RequestToGroomerForWorkingTimeDto.builder()
                     .day(timeDto.getDay())
                     .serviceType(timeDto.getServiceType())
                     .groomerId(Long.toString(request.getBody()))
                     .build();
-            ResponseEntity<ResponseWorkingTimeDto> responseFromGroomer = requester.getRestTemplate()
-                    .postForEntity(requestUrlGroomer + endpointGroomer, requestToGroomer, ResponseWorkingTimeDto.class);
+            ResponseEntity<ResponseFromGroomerForWorkingTimeDto> responseFromGroomer = requester.getRestTemplate()
+                    .postForEntity(requestUrlGroomer + endpointGroomer, requestToGroomer, ResponseFromGroomerForWorkingTimeDto.class);
             response = responseFromGroomer.getStatusCode().is2xxSuccessful() &&
                     responseFromGroomer.getBody() != null ? responseFromGroomer : response;
         }
         return response;
     }
 
-    private ResponseEntity<UserOrderTimeManagementDto[]> findBusyTimeForGroomer(ResponseEntity<Long> request, TimeDto timeDto) {
-        ResponseEntity<UserOrderTimeManagementDto[]> response = ResponseEntity.badRequest().build();
+    private ResponseEntity<ResponseFromUserOrderTimeManagementDto[]> findBusyTimeForGroomer(ResponseEntity<Long> request, TimeDto timeDto) {
+        ResponseEntity<ResponseFromUserOrderTimeManagementDto[]> response = ResponseEntity.badRequest().build();
         if (request.getStatusCode().is2xxSuccessful() && request.getBody() != null) {
-            UserOrderDto requestUserOrder = UserOrderDto.builder()
+            RequestToOrderForTimeManagementDto requestUserOrder = RequestToOrderForTimeManagementDto.builder()
                     .day(timeDto.getDay())
                     .groomerId(Long.toString(request.getBody()))
                     .build();
-            ResponseEntity<UserOrderTimeManagementDto[]> responseFromUserOrder = requester.getRestTemplate()
-                    .postForEntity(requestUrlUserOrder + endpointUserOrder, requestUserOrder, UserOrderTimeManagementDto[].class);
+            ResponseEntity<ResponseFromUserOrderTimeManagementDto[]> responseFromUserOrder = requester.getRestTemplate()
+                    .postForEntity(requestUrlUserOrder + endpointUserOrder, requestUserOrder, ResponseFromUserOrderTimeManagementDto[].class);
             response = responseFromUserOrder.getStatusCode().is2xxSuccessful() &&
                     responseFromUserOrder.getBody() != null ? responseFromUserOrder : response;
         }
         return response;
     }
 
-    private boolean checkResponse(ResponseEntity<ResponseWorkingTimeDto> responseWorkingTime, ResponseEntity<UserOrderTimeManagementDto[]> responseUserOrder) {
+    private boolean checkResponse(ResponseEntity<ResponseFromGroomerForWorkingTimeDto> responseWorkingTime, ResponseEntity<ResponseFromUserOrderTimeManagementDto[]> responseUserOrder) {
         return responseWorkingTime.getStatusCode().is2xxSuccessful()
                 && responseUserOrder.getStatusCode().is2xxSuccessful()
                 && responseWorkingTime.getBody() != null
                 && responseUserOrder.getBody() != null;
     }
 
-    private List<PeriodOrder> busyGroomerTime(ResponseEntity<UserOrderTimeManagementDto[]> response) {
-        UserOrderTimeManagementDto[] body = response.getBody();
+    private List<PeriodOrder> busyGroomerTime(ResponseEntity<ResponseFromUserOrderTimeManagementDto[]> response) {
+        ResponseFromUserOrderTimeManagementDto[] body = response.getBody();
         List<PeriodOrder> result = new ArrayList<>();
         if (body != null) {
             result = Arrays.stream(body).map(userOrder -> {

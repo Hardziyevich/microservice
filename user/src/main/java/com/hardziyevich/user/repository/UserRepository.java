@@ -1,4 +1,4 @@
-package com.hardziyevich.user.groomer;
+package com.hardziyevich.user.repository;
 
 import com.hardziyevich.user.entity.Role;
 import com.hardziyevich.user.entity.User;
