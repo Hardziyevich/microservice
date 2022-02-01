@@ -58,7 +58,7 @@ services:
       - SERVICE_SAVEUSER_URL=${SERVICE_SAVEUSER_URL}
     ports:
       - "8000:8000"
-  api:
+  frontend:
     build:
       context: ./challenges-frontend
       dockerfile: ./Dockerfile

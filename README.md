@@ -39,6 +39,7 @@ The database is filled with test data that is located along the path resource/sr
 ###Compile project and create container
 
 git clone https://github.com/Hardziyevich/microservice<br/>
+cd ./microservice
 ./mvnw clean package -DskipTests<br/>
 docker-compose up<br/>
 
