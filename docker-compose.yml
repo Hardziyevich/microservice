@@ -55,12 +55,15 @@ services:
       - SERVICE_GROOMER_DAY_URL=${SERVICE_GROOMER_DAY_URL}
       - SERVICE_USER_GROOMER_URL=${SERVICE_USER_GROOMER_URL}
       - SERVICE_USERORDER_ORDER_URL=${SERVICE_USERORDER_ORDER_URL}
+      - SERVICE_SAVEUSER_URL=${SERVICE_SAVEUSER_URL}
     ports:
       - "8000:8000"
   api:
-    container_name: api
+    build:
+      context: ./challenges-frontend
+      dockerfile: ./Dockerfile
     image: 'challenges-frontend:1.0'
     ports:
-      - "3000:80"
+      - "3000:3000"
     depends_on:
       - gateway

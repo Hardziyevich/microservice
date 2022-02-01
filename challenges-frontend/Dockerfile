@@ -1,2 +1,13 @@
-FROM nginx:1.19
-COPY build /usr/share/nginx/html/
+FROM node:16.13
+
+WORKDIR /app
+
+COPY ["package.json", "package-lock.json", "./"]
+
+RUN npm install --production
+
+COPY . .
+
+EXPOSE 3000
+
+CMD ["npm", "start"]
