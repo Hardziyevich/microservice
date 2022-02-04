@@ -7,11 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-public class FindAllGroomerBy implements CommandRequest<Long[]>  {
+public class FindAllGroomerBy implements CommandRequest  {
 
     private final String requestUrlGroomer;
     private final String endpointGroomer;
-    private Requester<Long[]>  requester;
+    private Requester requester;
 
     public FindAllGroomerBy(String requestUrlGroomer, String endpointGroomer) {
         this.requestUrlGroomer = requestUrlGroomer;
@@ -20,7 +20,7 @@ public class FindAllGroomerBy implements CommandRequest<Long[]>  {
 
     @Override
     public ResponseEntity<String[]> request() {
-        ResponseEntity<Long[]> response = requester.request();
+        ResponseEntity<?> response = requester.request();
         ResponseEntity<String[]> result = ResponseEntity.badRequest().build();
         HttpStatus statusCode = response.getStatusCode();
         if (statusCode.is2xxSuccessful() && response.getBody() != null) {
@@ -36,7 +36,7 @@ public class FindAllGroomerBy implements CommandRequest<Long[]>  {
         return requester.showTypeRequest();
     }
 
-    public void setRequester(Requester<Long[]>  requester) {
+    public void setRequester(Requester  requester) {
         this.requester = requester;
     }
 

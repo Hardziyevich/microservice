@@ -6,7 +6,6 @@ import com.hardziyevich.resource.dto.RequestToOrderForRegistrationOrderDto;
 import com.hardziyevich.resource.dto.SaveUserDto;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -15,13 +14,13 @@ import org.springframework.web.client.RestTemplate;
 public class OrderServiceImpl implements OrderService{
 
     private static final Long WRONG_RESULT = 0L;
-    private final Requester<Long> requester;
+    private final Requester requester;
     private final RestTemplate restTemplate;
     private final String userUrl;
     private final String userOrderUrl;
     private final String userOrderEndpoint;
 
-    public OrderServiceImpl(@Qualifier("findGroomerIdByNameAndLastName") Requester<Long> requester,
+    public OrderServiceImpl(@Qualifier("findGroomerIdByNameAndLastName") Requester requester,
                             @Value("${service.saveuser.url}") String userUrl,
                             @Value("${service.userorder.order.url}")String userOrderUrl,
                             @Value("${endpoint.userorder.save}") String userOrderEndpoint) {
@@ -57,15 +56,15 @@ public class OrderServiceImpl implements OrderService{
 
     private Long getGroomerId(OrderDto orderDto) {
         Field.GROOMER.setValue(orderDto.getGroomer());
-        ResponseEntity<Long> response = requester.request();
+        ResponseEntity<?> response = requester.request();
         return checkResponseEntity(response);
 
     }
 
-    private Long checkResponseEntity(ResponseEntity<Long> response) {
+    private Long checkResponseEntity(ResponseEntity<?> response) {
         Long result = WRONG_RESULT;
         if(response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-            result = response.getBody();
+            result = (Long) response.getBody();
         }
         return result;
     }

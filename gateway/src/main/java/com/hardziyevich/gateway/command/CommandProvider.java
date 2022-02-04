@@ -30,7 +30,7 @@ public enum CommandProvider {
                 .filter(x -> x.equals(field))
                 .map(x -> {
                     Optional<String> value = Optional.ofNullable(x.getValue());
-                    if(value.isPresent()) {
+                    if (value.isPresent()) {
                         x.setValue(null);
                     }
                     return value.orElse(replace);
@@ -44,5 +44,4 @@ public enum CommandProvider {
                 .filter(r -> r.fields.containsAll(fields))
                 .findFirst();
     }
-
 }

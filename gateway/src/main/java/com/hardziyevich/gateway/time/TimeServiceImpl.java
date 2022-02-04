@@ -20,13 +20,13 @@ import java.util.function.BiFunction;
 @Service
 public class TimeServiceImpl implements TimeService {
 
-    private Requester<Long> requester;
-    private String requestUrlGroomer;
-    private String endpointGroomer;
-    private String requestUrlUserOrder;
-    private String endpointUserOrder;
+    private final Requester requester;
+    private final String requestUrlGroomer;
+    private final String endpointGroomer;
+    private final String requestUrlUserOrder;
+    private final String endpointUserOrder;
 
-    public TimeServiceImpl(@Qualifier("findGroomerIdByNameAndLastName") Requester<Long> requester,
+    public TimeServiceImpl(@Qualifier("findGroomerIdByNameAndLastName") Requester requester,
                            @Value("${service.groomer.day.url}") String requestUrlGroomer,
                            @Value("${endpoint.groomer.find.working.time}") String endpointGroomer,
                            @Value("${service.userorder.order.url}") String requestUrlUserOrder,
@@ -42,7 +42,7 @@ public class TimeServiceImpl implements TimeService {
     public ResponseEntity<List<String>> findFreeWorkingTimeGroomer(TimeDto timeDto) {
         Field.GROOMER.setValue(timeDto.getGroomer());
         ResponseEntity<List<String>> response = ResponseEntity.badRequest().build();
-        ResponseEntity<Long> request = requester.request();
+        ResponseEntity<?> request = requester.request();
         ResponseEntity<ResponseFromGroomerForWorkingTimeDto> durationWorkingTimeForGroomer = findDurationWorkingTimeForGroomer(request, timeDto);
         ResponseEntity<ResponseFromUserOrderTimeManagementDto[]> busyTimeForGroomer = findBusyTimeForGroomer(request, timeDto);
         if (checkResponse(durationWorkingTimeForGroomer, busyTimeForGroomer)) {
@@ -62,13 +62,13 @@ public class TimeServiceImpl implements TimeService {
         return response;
     }
 
-    private ResponseEntity<ResponseFromGroomerForWorkingTimeDto> findDurationWorkingTimeForGroomer(ResponseEntity<Long> request, TimeDto timeDto) {
+    private ResponseEntity<ResponseFromGroomerForWorkingTimeDto> findDurationWorkingTimeForGroomer(ResponseEntity<?> request, TimeDto timeDto) {
         ResponseEntity<ResponseFromGroomerForWorkingTimeDto> response = ResponseEntity.badRequest().build();
         if (request.getStatusCode().is2xxSuccessful() && request.getBody() != null) {
             RequestToGroomerForWorkingTimeDto requestToGroomer = RequestToGroomerForWorkingTimeDto.builder()
                     .day(timeDto.getDay())
                     .serviceType(timeDto.getServiceType())
-                    .groomerId(Long.toString(request.getBody()))
+                    .groomerId(Long.toString((Long) request.getBody()))
                     .build();
             ResponseEntity<ResponseFromGroomerForWorkingTimeDto> responseFromGroomer = requester.getRestTemplate()
                     .postForEntity(requestUrlGroomer + endpointGroomer, requestToGroomer, ResponseFromGroomerForWorkingTimeDto.class);
@@ -78,12 +78,12 @@ public class TimeServiceImpl implements TimeService {
         return response;
     }
 
-    private ResponseEntity<ResponseFromUserOrderTimeManagementDto[]> findBusyTimeForGroomer(ResponseEntity<Long> request, TimeDto timeDto) {
+    private ResponseEntity<ResponseFromUserOrderTimeManagementDto[]> findBusyTimeForGroomer(ResponseEntity<?> request, TimeDto timeDto) {
         ResponseEntity<ResponseFromUserOrderTimeManagementDto[]> response = ResponseEntity.badRequest().build();
         if (request.getStatusCode().is2xxSuccessful() && request.getBody() != null) {
             RequestToOrderForTimeManagementDto requestUserOrder = RequestToOrderForTimeManagementDto.builder()
                     .day(timeDto.getDay())
-                    .groomerId(Long.toString(request.getBody()))
+                    .groomerId(Long.toString((Long) request.getBody()))
                     .build();
             ResponseEntity<ResponseFromUserOrderTimeManagementDto[]> responseFromUserOrder = requester.getRestTemplate()
                     .postForEntity(requestUrlUserOrder + endpointUserOrder, requestUserOrder, ResponseFromUserOrderTimeManagementDto[].class);

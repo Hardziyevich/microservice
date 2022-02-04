@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-public class FindDayAndService implements Requester<Long[]> {
+public class FindDayAndService implements Requester {
 
     private final RestTemplate restTemplate;
     private final String requestUrl;

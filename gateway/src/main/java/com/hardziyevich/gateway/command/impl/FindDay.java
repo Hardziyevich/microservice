@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-public class FindDay implements Requester<Long[]> {
+public class FindDay implements Requester {
 
     private final RestTemplate restTemplate;
     private final String requestUrl;

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -37,7 +38,7 @@ public class ServiceController {
     }
 
     @PostMapping("/groomerByService")
-    private List<Long> showAllGroomerId(@RequestBody @NotNull String day) {
-        return typeService.showALlGroomerIdByService(day);
+    private List<Long> showAllGroomerId(@RequestBody @NotNull String service) {
+        return typeService.showALlGroomerIdByService(service);
     }
 }

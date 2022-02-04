@@ -17,11 +17,11 @@ import javax.validation.Valid;
 @RequestMapping("/day")
 public class DayController {
 
-    private final Requester<Long> requester;
+    private final Requester requester;
     private final String serviceUrl;
     private final String endpoint;
 
-    public DayController(@Qualifier("findGroomerIdByNameAndLastName") Requester<Long> requester,
+    public DayController(@Qualifier("findGroomerIdByNameAndLastName") Requester requester,
                          @Value("${service.groomer.day.url}") String serviceUrl,
                          @Value("${endpoint.groomer.find.day}") String endpoint) {
         this.requester = requester;
@@ -37,7 +37,7 @@ public class DayController {
             responseEntity = responseToService(requestDayDto.getGroomer(), requestDayDto.getServiceType());
         } else {
             Field.GROOMER.setValue(requestDayDto.getGroomer());
-            ResponseEntity<Long> request = requester.request();
+            ResponseEntity<?> request = requester.request();
             if (request.getStatusCode().is2xxSuccessful() && request.getBody() != null) {
                     responseEntity = responseToService(request.getBody().toString(), requestDayDto.getServiceType());
             }

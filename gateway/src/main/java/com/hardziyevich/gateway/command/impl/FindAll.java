@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-public class FindAll implements CommandRequest<String[]> {
+public class FindAll implements CommandRequest {
 
     private final RestTemplate restTemplate;
     private final String requestUrl;
@@ -37,7 +37,7 @@ public class FindAll implements CommandRequest<String[]> {
     }
 
     @Override
-    public void setRequester(Requester<String[]> requester) {
+    public void setRequester(Requester requester) {
 
     }
 }

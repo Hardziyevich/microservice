@@ -1,8 +1,5 @@
 package com.hardziyevich.gateway.command;
 
-import com.hardziyevich.gateway.command.CommandProvider;
-import com.hardziyevich.gateway.command.CommandRequestProvider;
-import com.hardziyevich.gateway.command.CommandRequest;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;

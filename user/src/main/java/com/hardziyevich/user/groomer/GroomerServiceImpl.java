@@ -29,6 +29,7 @@ public class GroomerServiceImpl implements GroomerService {
     @Override
     public List<String> findAllGroomerByListId(List<Long> groomerId) {
         return userRepository.findAllById(groomerId).stream()
+                .filter(g -> g.getRole().equals(Role.GROOMER))
                 .map(u -> String.join(DELIMITER, u.getFirstName(), u.getLastName()))
                 .toList();
     }

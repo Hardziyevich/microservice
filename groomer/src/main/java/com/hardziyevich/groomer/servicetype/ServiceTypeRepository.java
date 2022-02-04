@@ -18,7 +18,7 @@ public interface ServiceTypeRepository extends JpaRepository<ServiceType,Long> {
     @Query("SELECT DISTINCT st.type FROM ServiceType st JOIN st.groomerWorkTimes gwt WHERE gwt.groomerId=?1 AND gwt.day=?2")
     List<String> findServiceTypeByGroomerIdAndDay(Long groomerId, LocalDate day);
 
-    @Query("SELECT gwt.id FROM ServiceType st JOIN st.groomerWorkTimes gwt WHERE st.type=?1")
+    @Query("SELECT DISTINCT  gwt.groomerId FROM ServiceType st JOIN st.groomerWorkTimes gwt WHERE st.type=?1")
     List<Long> findGroomerIdByService(String service);
 
 }
