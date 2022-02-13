@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -24,7 +23,6 @@ public class ServiceController {
         List<String> result = new ArrayList<>();
         boolean groomerIsBlank = request.getGroomerId().isBlank();
         boolean dayIsBlank = request.getDay().isBlank();
-
         if(groomerIsBlank && dayIsBlank) {
             result.addAll(typeService.showAllService());
         } else if(groomerIsBlank) {
@@ -38,7 +36,7 @@ public class ServiceController {
     }
 
     @PostMapping("/groomerByService")
-    private List<Long> showAllGroomerId(@RequestBody @NotNull String service) {
+    public List<Long> showAllGroomerId(@RequestBody @NotNull String service) {
         return typeService.showALlGroomerIdByService(service);
     }
 }

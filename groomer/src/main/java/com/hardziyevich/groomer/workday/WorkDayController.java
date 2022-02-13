@@ -45,17 +45,17 @@ public class WorkDayController {
     }
 
     @PostMapping("/groomerByDay")
-    private List<Long> showAllGroomerId(@RequestBody @DateValidation String day) {
+    public List<Long> showAllGroomerId(@RequestBody @DateValidation String day) {
         return workDayService.showALlGroomerIdByWorkingDay(day);
     }
 
     @PostMapping("/groomerByDayAndService")
-    private List<Long> showAllGroomerId(@RequestBody @Valid RequestToGroomerForWorkingDayDto request) {
+    public List<Long> showAllGroomerId(@RequestBody @Valid RequestToGroomerForWorkingDayDto request) {
         return workDayService.showAllGroomerIdByWorkingDayAndService(request.getDay(),request.getServiceType());
     }
 
     @PostMapping("/findWorkingTime")
-    private ResponseEntity<ResponseFromGroomerForWorkingTimeDto> findWorkingTime(@RequestBody @Valid RequestToGroomerForWorkingTimeDto dto){
+    public ResponseEntity<ResponseFromGroomerForWorkingTimeDto> findWorkingTime(@RequestBody @Valid RequestToGroomerForWorkingTimeDto dto){
         return workDayService.findWorkingTime(dto);
     }
 

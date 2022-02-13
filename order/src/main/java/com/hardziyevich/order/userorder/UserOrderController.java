@@ -28,7 +28,6 @@ public class UserOrderController {
 
     @PostMapping("/save")
     public Long saveOrder(@RequestBody @Valid RequestToOrderForRegistrationOrderDto request) {
-        System.out.println(request);
         return serviceUserOrder.saveOrder(request);
     }
 

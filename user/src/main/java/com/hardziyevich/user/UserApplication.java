@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.hardziyevich.user","com.hardziyevich.resource"})
 public class UserApplication {
 
 	public static void main(String[] args) {

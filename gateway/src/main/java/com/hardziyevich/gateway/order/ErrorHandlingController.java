@@ -26,7 +26,6 @@ public class ErrorHandlingController {
             String fieldName = String.join(DELIMITER,((FieldError) error).getField(),ERROR);
             errors.put(fieldName,error.getDefaultMessage());
         });
-        errors.forEach((k,v) -> System.out.println(k + " "+ v));
         return errors;
     }
 }
