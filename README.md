@@ -5,8 +5,9 @@ Software represents a registration form to groomer service.
 
 #Non-functional requirements
 
-* JDK 16+;<br/>
+* JDK 17+;<br/>
 * Maven 3.6+;<br/>
+* Spring Boot 2.6.3;<br/>
 * Database PostgreSQL;<br/>
 * Docker-machine;<br/>
 * Node.js v16.13.1.<br/>

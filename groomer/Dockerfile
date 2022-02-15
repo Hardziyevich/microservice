@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk16:ubi
+FROM openjdk:17
 ARG JAR_FILE=target/groomer-0.0.1-SNAPSHOT.jar
 ADD ${JAR_FILE} app.jar
 WORKDIR /
