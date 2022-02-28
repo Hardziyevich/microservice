@@ -7,8 +7,10 @@ import org.aspectj.lang.annotation.Pointcut;
 public class JoinPointConfig {
 
     @Pointcut("@annotation(org.springframework.web.bind.annotation.PostMapping)")
-    public void postMappingPointcut() {}
+    public void postMappingPointcut() {
+    }
 
     @Pointcut("@annotation(org.springframework.web.bind.annotation.ExceptionHandler)")
-    public void errorHandlingControllerPointCut(){}
+    public void errorHandlingControllerPointCut() {
+    }
 }
