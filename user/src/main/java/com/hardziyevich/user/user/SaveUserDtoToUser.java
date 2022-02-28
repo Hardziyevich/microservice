@@ -4,7 +4,9 @@ import com.hardziyevich.resource.dto.SaveUserDto;
 import com.hardziyevich.resource.mapper.Mapper;
 import com.hardziyevich.user.entity.Role;
 import com.hardziyevich.user.entity.User;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SaveUserDtoToUser implements Mapper<User, SaveUserDto> {
 
     @Override

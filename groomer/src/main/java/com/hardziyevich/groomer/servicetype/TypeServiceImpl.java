@@ -3,12 +3,14 @@ package com.hardziyevich.groomer.servicetype;
 import com.hardziyevich.groomer.entity.ServiceType;
 import com.hardziyevich.resource.dto.RequestToGroomerForServiceDto;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
 
 
 @Service
+@Transactional
 public class TypeServiceImpl implements TypeService {
 
     private final ServiceTypeRepository serviceTypeRepository;

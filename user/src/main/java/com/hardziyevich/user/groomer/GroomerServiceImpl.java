@@ -3,11 +3,13 @@ package com.hardziyevich.user.groomer;
 import com.hardziyevich.user.entity.Role;
 import com.hardziyevich.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class GroomerServiceImpl implements GroomerService {
 
     private static final String DELIMITER = " ";

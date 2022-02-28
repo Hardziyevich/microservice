@@ -3,7 +3,9 @@ package com.hardziyevich.groomer.workday;
 import com.hardziyevich.groomer.entity.GroomerWorkTime;
 import com.hardziyevich.resource.dto.ResponseFromGroomerForWorkingTimeDto;
 import com.hardziyevich.resource.mapper.Mapper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class GroomerWorkTimeToResponseWorkingTimeDto implements Mapper<ResponseFromGroomerForWorkingTimeDto, GroomerWorkTime> {
 
     @Override
