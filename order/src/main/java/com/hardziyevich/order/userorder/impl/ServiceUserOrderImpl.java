@@ -12,23 +12,19 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class ServiceUserOrderImpl implements ServiceUserOrder {
-
-    private final UserOrderRepository userOrderRepository;
-
-    public ServiceUserOrderImpl(UserOrderRepository userOrderRepository) {
-        this.userOrderRepository = userOrderRepository;
-    }
+public record ServiceUserOrderImpl(UserOrderRepository userOrderRepository,
+                                   Mapper<UserOrder, RequestToOrderForRegistrationOrderDto> mapperUserOrder,
+                                   Mapper<ResponseFromUserOrderTimeManagementDto, UserOrder> mapperResponseFromUserOrderTimeManagement) implements ServiceUserOrder {
 
     @Override
     public List<ResponseFromUserOrderTimeManagementDto> findDurationAndTimeOrders(String groomerId, String day) {
         return userOrderRepository.findUserOrderByGroomerIdAndDay(Long.parseLong(groomerId),LocalDate.parse(day)).stream()
-                .map(u -> new RequestForMapperTimeManagementToUserOrder().mapTo(u)).toList();
+                .map(mapperResponseFromUserOrderTimeManagement::mapTo).toList();
     }
 
     @Override
     public Long saveOrder(RequestToOrderForRegistrationOrderDto request) {
-        UserOrder userOrder = new RequestForSaveOrderToUserOrder().mapTo(request);
+        UserOrder userOrder = mapperUserOrder.mapTo(request);
         UserOrder save = userOrderRepository.save(userOrder);
         return save.getId();
     }

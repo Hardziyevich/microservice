@@ -5,6 +5,7 @@ import com.hardziyevich.resource.dto.ResponseFromUserOrderTimeManagementDto;
 import com.hardziyevich.resource.mapper.Mapper;
 import org.springframework.stereotype.Component;
 
+@Component
 public class RequestForMapperTimeManagementToUserOrder implements Mapper<ResponseFromUserOrderTimeManagementDto, UserOrder> {
 
     @Override

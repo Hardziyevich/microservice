@@ -3,7 +3,9 @@ package com.hardziyevich.order.userorder.impl;
 import com.hardziyevich.order.entity.UserOrder;
 import com.hardziyevich.resource.dto.RequestToOrderForRegistrationOrderDto;
 import com.hardziyevich.resource.mapper.Mapper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RequestForSaveOrderToUserOrder implements Mapper<UserOrder, RequestToOrderForRegistrationOrderDto> {
 
     @Override
