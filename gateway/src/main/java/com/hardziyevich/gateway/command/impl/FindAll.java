@@ -3,7 +3,8 @@ package com.hardziyevich.gateway.command.impl;
 import com.hardziyevich.gateway.command.CommandProvider;
 import com.hardziyevich.gateway.command.CommandRequest;
 import com.hardziyevich.gateway.command.Requester;
-import org.springframework.beans.factory.annotation.Value;
+import com.hardziyevich.gateway.config.EndpointGroomerProperties;
+import com.hardziyevich.gateway.config.ServiceProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -13,21 +14,21 @@ import org.springframework.web.client.RestTemplate;
 public class FindAll implements CommandRequest {
 
     private final RestTemplate restTemplate;
-    private final String requestUrl;
-    private final String endpointGroomer;
+    private final ServiceProperties serviceProperties;
+    private final EndpointGroomerProperties endpointGroomer;
     private final CommandProvider commandProvider = CommandProvider.FIND_ALL;
 
     public FindAll(RestTemplateBuilder builder,
-                   @Value("${service.user.groomer.url}") String requestUrl,
-                   @Value("${endpoint.groomer.all}") String endpointGroomer) {
+                   ServiceProperties serviceProperties,
+                   EndpointGroomerProperties endpointGroomer) {
         this.restTemplate = builder.build();
-        this.requestUrl = requestUrl;
+        this.serviceProperties = serviceProperties;
         this.endpointGroomer = endpointGroomer;
     }
 
     @Override
     public ResponseEntity<String[]> request() {
-        return restTemplate.postForEntity(requestUrl + endpointGroomer,
+        return restTemplate.postForEntity(serviceProperties.userGroomerUrl() + endpointGroomer.all(),
                 "", String[].class);
     }
 

@@ -4,10 +4,12 @@ import com.hardziyevich.resource.dto.RequestToOrderForRegistrationOrderDto;
 import com.hardziyevich.resource.mapper.Mapper;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+@Component
 public class OrderDtoToRequestOrderForRegistrationDto implements Mapper<RequestToOrderForRegistrationOrderDto,OrderDto> {
     @Override
     public RequestToOrderForRegistrationOrderDto mapTo(OrderDto orderDto) {

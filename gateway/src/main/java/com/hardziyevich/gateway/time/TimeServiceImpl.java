@@ -2,6 +2,9 @@ package com.hardziyevich.gateway.time;
 
 import com.hardziyevich.gateway.command.Field;
 import com.hardziyevich.gateway.command.Requester;
+import com.hardziyevich.gateway.config.EndpointGroomerProperties;
+import com.hardziyevich.gateway.config.EndpointUserOrderProperties;
+import com.hardziyevich.gateway.config.ServiceProperties;
 import com.hardziyevich.resource.dto.RequestToGroomerForWorkingTimeDto;
 import com.hardziyevich.resource.dto.ResponseFromGroomerForWorkingTimeDto;
 import com.hardziyevich.resource.dto.RequestToOrderForTimeManagementDto;
@@ -21,21 +24,18 @@ import java.util.function.BiFunction;
 public class TimeServiceImpl implements TimeService {
 
     private final Requester requester;
-    private final String requestUrlGroomer;
-    private final String endpointGroomer;
-    private final String requestUrlUserOrder;
-    private final String endpointUserOrder;
+    private final ServiceProperties serviceProperties;
+    private final EndpointGroomerProperties endpointGroomerProperties;
+    private final EndpointUserOrderProperties endpointUserOrderProperties;
 
     public TimeServiceImpl(@Qualifier("findGroomerIdByNameAndLastName") Requester requester,
-                           @Value("${service.groomer.day.url}") String requestUrlGroomer,
-                           @Value("${endpoint.groomer.find.working.time}") String endpointGroomer,
-                           @Value("${service.userorder.order.url}") String requestUrlUserOrder,
-                           @Value("${endpoint.userorder.find.busytime}") String endpointUserOrder) {
+                           ServiceProperties serviceProperties,
+                           EndpointGroomerProperties endpointGroomerProperties,
+                           EndpointUserOrderProperties endpointUserOrderProperties) {
         this.requester = requester;
-        this.requestUrlGroomer = requestUrlGroomer;
-        this.endpointGroomer = endpointGroomer;
-        this.requestUrlUserOrder = requestUrlUserOrder;
-        this.endpointUserOrder = endpointUserOrder;
+        this.serviceProperties = serviceProperties;
+        this.endpointGroomerProperties = endpointGroomerProperties;
+        this.endpointUserOrderProperties = endpointUserOrderProperties;
     }
 
     @Override
@@ -71,7 +71,7 @@ public class TimeServiceImpl implements TimeService {
                     .groomerId(Long.toString((Long) request.getBody()))
                     .build();
             ResponseEntity<ResponseFromGroomerForWorkingTimeDto> responseFromGroomer = requester.getRestTemplate()
-                    .postForEntity(requestUrlGroomer + endpointGroomer, requestToGroomer, ResponseFromGroomerForWorkingTimeDto.class);
+                    .postForEntity(serviceProperties.groomerDayUrl() + endpointGroomerProperties.findWorkingTime(), requestToGroomer, ResponseFromGroomerForWorkingTimeDto.class);
             response = responseFromGroomer.getStatusCode().is2xxSuccessful() &&
                     responseFromGroomer.getBody() != null ? responseFromGroomer : response;
         }
@@ -86,7 +86,7 @@ public class TimeServiceImpl implements TimeService {
                     .groomerId(Long.toString((Long) request.getBody()))
                     .build();
             ResponseEntity<ResponseFromUserOrderTimeManagementDto[]> responseFromUserOrder = requester.getRestTemplate()
-                    .postForEntity(requestUrlUserOrder + endpointUserOrder, requestUserOrder, ResponseFromUserOrderTimeManagementDto[].class);
+                    .postForEntity(serviceProperties.orderUserUrl() + endpointUserOrderProperties.findBusyTime(), requestUserOrder, ResponseFromUserOrderTimeManagementDto[].class);
             response = responseFromUserOrder.getStatusCode().is2xxSuccessful() &&
                     responseFromUserOrder.getBody() != null ? responseFromUserOrder : response;
         }

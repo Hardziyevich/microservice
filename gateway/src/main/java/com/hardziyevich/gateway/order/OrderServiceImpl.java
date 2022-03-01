@@ -2,8 +2,11 @@ package com.hardziyevich.gateway.order;
 
 import com.hardziyevich.gateway.command.Field;
 import com.hardziyevich.gateway.command.Requester;
+import com.hardziyevich.gateway.config.EndpointUserOrderProperties;
+import com.hardziyevich.gateway.config.ServiceProperties;
 import com.hardziyevich.resource.dto.RequestToOrderForRegistrationOrderDto;
 import com.hardziyevich.resource.dto.SaveUserDto;
+import com.hardziyevich.resource.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -11,37 +14,27 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class OrderServiceImpl implements OrderService{
+public record OrderServiceImpl(
+        @Qualifier("findGroomerIdByNameAndLastName") Requester requester,
+        ServiceProperties serviceProperties,
+        EndpointUserOrderProperties endpointUserOrderProperties,
+        Mapper<RequestToOrderForRegistrationOrderDto, OrderDto> requestToOrderForRegistrationOrderDtoOrderDtoMapper,
+        Mapper<SaveUserDto, OrderDto> saveUserDtoOrderDtoMapper
+) implements OrderService {
 
     private static final Long WRONG_RESULT = 0L;
-    private final Requester requester;
-    private final RestTemplate restTemplate;
-    private final String userUrl;
-    private final String userOrderUrl;
-    private final String userOrderEndpoint;
-
-    public OrderServiceImpl(@Qualifier("findGroomerIdByNameAndLastName") Requester requester,
-                            @Value("${service.saveuser.url}") String userUrl,
-                            @Value("${service.userorder.order.url}")String userOrderUrl,
-                            @Value("${endpoint.userorder.save}") String userOrderEndpoint) {
-        this.requester = requester;
-        this.restTemplate = requester.getRestTemplate();
-        this.userUrl = userUrl;
-        this.userOrderUrl = userOrderUrl;
-        this.userOrderEndpoint = userOrderEndpoint;
-    }
 
     @Override
     public Long saveOrder(OrderDto orderDto) {
         Long result = WRONG_RESULT;
         Long userId = getUserId(orderDto);
         Long groomerId = getGroomerId(orderDto);
-        if(!userId.equals(WRONG_RESULT) && !groomerId.equals(WRONG_RESULT)) {
-            RequestToOrderForRegistrationOrderDto requestToOrderForRegistrationOrderDto = new OrderDtoToRequestOrderForRegistrationDto().mapTo(orderDto);
+        if (!userId.equals(WRONG_RESULT) && !groomerId.equals(WRONG_RESULT)) {
+            RequestToOrderForRegistrationOrderDto requestToOrderForRegistrationOrderDto = requestToOrderForRegistrationOrderDtoOrderDtoMapper.mapTo(orderDto);
             requestToOrderForRegistrationOrderDto.setGroomerId(groomerId);
             requestToOrderForRegistrationOrderDto.setUserId(userId);
-            ResponseEntity<Long> response = restTemplate.postForEntity(userOrderUrl + userOrderEndpoint, requestToOrderForRegistrationOrderDto, Long.class);
-            if(response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+            ResponseEntity<Long> response = requester.getRestTemplate().postForEntity(serviceProperties.orderUserUrl() + endpointUserOrderProperties.save(), requestToOrderForRegistrationOrderDto, Long.class);
+            if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
                 result = response.getBody();
             }
         }
@@ -49,8 +42,8 @@ public class OrderServiceImpl implements OrderService{
     }
 
     private Long getUserId(OrderDto orderDto) {
-        SaveUserDto saveUserDto = new OrderDtoToSaveUserDto().mapTo(orderDto);
-        ResponseEntity<Long> response = restTemplate.postForEntity(userUrl, saveUserDto, Long.class);
+        SaveUserDto saveUserDto = saveUserDtoOrderDtoMapper.mapTo(orderDto);
+        ResponseEntity<Long> response = requester.getRestTemplate().postForEntity(serviceProperties.userSaveUrl(), saveUserDto, Long.class);
         return checkResponseEntity(response);
     }
 
@@ -63,7 +56,7 @@ public class OrderServiceImpl implements OrderService{
 
     private Long checkResponseEntity(ResponseEntity<?> response) {
         Long result = WRONG_RESULT;
-        if(response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+        if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
             result = (Long) response.getBody();
         }
         return result;

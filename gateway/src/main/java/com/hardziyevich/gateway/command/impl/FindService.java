@@ -3,6 +3,8 @@ package com.hardziyevich.gateway.command.impl;
 import com.hardziyevich.gateway.command.CommandProvider;
 import com.hardziyevich.gateway.command.Field;
 import com.hardziyevich.gateway.command.Requester;
+import com.hardziyevich.gateway.config.EndpointGroomerProperties;
+import com.hardziyevich.gateway.config.ServiceProperties;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
@@ -13,21 +15,21 @@ import org.springframework.web.client.RestTemplate;
 public class FindService implements Requester {
 
     private final RestTemplate restTemplate;
-    private final String requestUrl;
-    private final String endpoint;
+    private final ServiceProperties serviceProperties;
+    private final EndpointGroomerProperties endpointGroomerProperties;
     private final CommandProvider commandProvider = CommandProvider.FIND_SERVICE;
 
     public FindService(RestTemplateBuilder builder,
-                                   @Value("${service.groomer.service.url}") String requestUrlService,
-                                   @Value("${endpoint.groomer.by.service}") String endpointService) {
+                       ServiceProperties serviceProperties,
+                       EndpointGroomerProperties endpointGroomerProperties) {
         this.restTemplate = builder.build();
-        this.requestUrl = requestUrlService;
-        this.endpoint = endpointService;
+        this.serviceProperties = serviceProperties;
+        this.endpointGroomerProperties = endpointGroomerProperties;
     }
 
     @Override
     public ResponseEntity<Long[]> request() {
-        return restTemplate.postForEntity(requestUrl + endpoint,
+        return restTemplate.postForEntity(serviceProperties.groomerServiceUrl() + endpointGroomerProperties.byService(),
                 commandProvider.getValueFromField(Field.SERVICE), Long[].class);
     }
 

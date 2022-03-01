@@ -2,7 +2,9 @@ package com.hardziyevich.gateway.order;
 
 import com.hardziyevich.resource.dto.SaveUserDto;
 import com.hardziyevich.resource.mapper.Mapper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class OrderDtoToSaveUserDto implements Mapper<SaveUserDto,OrderDto> {
 
     @Override

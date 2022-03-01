@@ -2,6 +2,8 @@ package com.hardziyevich.gateway.day;
 
 import com.hardziyevich.gateway.command.Field;
 import com.hardziyevich.gateway.command.Requester;
+import com.hardziyevich.gateway.config.EndpointGroomerProperties;
+import com.hardziyevich.gateway.config.ServiceProperties;
 import com.hardziyevich.resource.dto.WorkingDayDto;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,15 +20,15 @@ import javax.validation.Valid;
 public class DayController {
 
     private final Requester requester;
-    private final String serviceUrl;
-    private final String endpoint;
+    private final ServiceProperties serviceProperties;
+    private final EndpointGroomerProperties endpointGroomerProperties;
 
     public DayController(@Qualifier("findGroomerIdByNameAndLastName") Requester requester,
-                         @Value("${service.groomer.day.url}") String serviceUrl,
-                         @Value("${endpoint.groomer.find.day}") String endpoint) {
+                         ServiceProperties serviceProperties,
+                         EndpointGroomerProperties endpointGroomerProperties) {
         this.requester = requester;
-        this.serviceUrl = serviceUrl;
-        this.endpoint = endpoint;
+        this.serviceProperties = serviceProperties;
+        this.endpointGroomerProperties = endpointGroomerProperties;
     }
 
     @PostMapping("/find")
@@ -46,7 +48,7 @@ public class DayController {
     }
 
     private ResponseEntity<String[]> responseToService(String groomerId, String serviceType) {
-        return requester.getRestTemplate().postForEntity(serviceUrl + endpoint, WorkingDayDto.builder()
+        return requester.getRestTemplate().postForEntity(serviceProperties.groomerDayUrl() + endpointGroomerProperties.findDay(), WorkingDayDto.builder()
                 .serviceType(serviceType)
                 .groomerId(groomerId)
                 .build(), String[].class);

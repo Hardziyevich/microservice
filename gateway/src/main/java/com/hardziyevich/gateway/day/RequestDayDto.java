@@ -1,6 +1,5 @@
 package com.hardziyevich.gateway.day;
 
-import com.hardziyevich.resource.validation.DigitValidation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

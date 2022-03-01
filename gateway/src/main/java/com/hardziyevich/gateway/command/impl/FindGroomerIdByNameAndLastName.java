@@ -3,6 +3,8 @@ package com.hardziyevich.gateway.command.impl;
 import com.hardziyevich.gateway.command.CommandProvider;
 import com.hardziyevich.gateway.command.Field;
 import com.hardziyevich.gateway.command.Requester;
+import com.hardziyevich.gateway.config.EndpointUserProperties;
+import com.hardziyevich.gateway.config.ServiceProperties;
 import com.hardziyevich.resource.dto.PersonalDataGroomerDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -14,16 +16,16 @@ import org.springframework.web.client.RestTemplate;
 public class FindGroomerIdByNameAndLastName implements Requester {
 
     private final RestTemplate restTemplate;
-    private final String requestUrl;
-    private final String endpoint;
+    private final ServiceProperties serviceProperties;
+    private final EndpointUserProperties endpointUserProperties;
     private final CommandProvider commandProvider = CommandProvider.FIND_GROOMER;
 
     public FindGroomerIdByNameAndLastName(RestTemplateBuilder builder,
-                       @Value("${service.user.groomer.url}") String requestUrl,
-                       @Value("${endpoint.user.find.by.name.and.last}") String endpoint) {
+                                          ServiceProperties serviceProperties,
+                                          EndpointUserProperties endpointUserProperties) {
         this.restTemplate = builder.build();
-        this.requestUrl = requestUrl;
-        this.endpoint = endpoint;
+        this.serviceProperties = serviceProperties;
+        this.endpointUserProperties = endpointUserProperties;
     }
 
     @Override
@@ -32,8 +34,8 @@ public class FindGroomerIdByNameAndLastName implements Requester {
         String[] initials = valueFromField.split(" ");
         String firstName = initials[0];
         String lastName = initials[1];
-        PersonalDataGroomerDto personalDataGroomerDto = new PersonalDataGroomerDto(firstName,lastName);
-        return restTemplate.postForEntity(requestUrl + endpoint,
+        PersonalDataGroomerDto personalDataGroomerDto = new PersonalDataGroomerDto(firstName, lastName);
+        return restTemplate.postForEntity(serviceProperties.userGroomerUrl() + endpointUserProperties.findByNameAndLast(),
                 personalDataGroomerDto, Long.class);
     }
 

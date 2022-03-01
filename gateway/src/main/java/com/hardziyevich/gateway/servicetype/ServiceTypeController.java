@@ -2,6 +2,8 @@ package com.hardziyevich.gateway.servicetype;
 
 import com.hardziyevich.gateway.command.Field;
 import com.hardziyevich.gateway.command.Requester;
+import com.hardziyevich.gateway.config.EndpointGroomerProperties;
+import com.hardziyevich.gateway.config.ServiceProperties;
 import com.hardziyevich.resource.dto.RequestToGroomerForServiceDto;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,15 +20,15 @@ import javax.validation.Valid;
 public class ServiceTypeController {
 
     private final Requester requester;
-    private final String serviceUrl;
-    private final String endpoint;
+    private final ServiceProperties serviceProperties;
+    private final EndpointGroomerProperties endpointGroomerProperties;
 
     public ServiceTypeController(@Qualifier("findGroomerIdByNameAndLastName") Requester requester,
-                                 @Value("${service.groomer.service.url}") String serviceUrl,
-                                 @Value("${endpoint.groomer.find.service}") String endpoint) {
+                                 ServiceProperties serviceProperties,
+                                 EndpointGroomerProperties endpointGroomerProperties) {
         this.requester = requester;
-        this.serviceUrl = serviceUrl;
-        this.endpoint = endpoint;
+        this.serviceProperties = serviceProperties;
+        this.endpointGroomerProperties = endpointGroomerProperties;
     }
 
     @PostMapping("/find")
@@ -46,7 +48,7 @@ public class ServiceTypeController {
     }
 
     private ResponseEntity<String[]> responseToService(String groomerId, String day) {
-        return requester.getRestTemplate().postForEntity(serviceUrl + endpoint, RequestToGroomerForServiceDto.builder()
+        return requester.getRestTemplate().postForEntity(serviceProperties.groomerServiceUrl() + endpointGroomerProperties.findService(), RequestToGroomerForServiceDto.builder()
                 .day(day)
                 .groomerId(groomerId)
                 .build(), String[].class);
