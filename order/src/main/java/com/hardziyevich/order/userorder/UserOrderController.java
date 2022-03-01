@@ -12,7 +12,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/user")
 public class UserOrderController {
 
     private final ServiceUserOrder serviceUserOrder;
