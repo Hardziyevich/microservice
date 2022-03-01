@@ -10,7 +10,6 @@ import com.hardziyevich.resource.dto.ResponseFromGroomerForWorkingTimeDto;
 import com.hardziyevich.resource.dto.RequestToOrderForTimeManagementDto;
 import com.hardziyevich.resource.dto.ResponseFromUserOrderTimeManagementDto;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +39,7 @@ public class TimeServiceImpl implements TimeService {
 
     @Override
     public ResponseEntity<List<String>> findFreeWorkingTimeGroomer(TimeDto timeDto) {
-        Field.GROOMER.setValue(timeDto.getGroomer());
+        Field.GROOMER.setValue(timeDto.groomer());
         ResponseEntity<List<String>> response = ResponseEntity.badRequest().build();
         ResponseEntity<?> request = requester.request();
         ResponseEntity<ResponseFromGroomerForWorkingTimeDto> durationWorkingTimeForGroomer = findDurationWorkingTimeForGroomer(request, timeDto);
@@ -54,7 +53,7 @@ public class TimeServiceImpl implements TimeService {
                     workingTImeForGroomer.getDuration());
             List<PeriodOrder> periodOrders = freeTimeForOrder(allTimePeriod, busyOrders);
             List<String> stringStream = periodOrders.stream()
-                    .map(p -> String.join("-", p.getStart().toString(), p.getEnd().toString()))
+                    .map(p -> String.join("-", p.start().toString(), p.end().toString()))
                     .toList();
 
             response = ResponseEntity.ok(stringStream);
@@ -66,8 +65,8 @@ public class TimeServiceImpl implements TimeService {
         ResponseEntity<ResponseFromGroomerForWorkingTimeDto> response = ResponseEntity.badRequest().build();
         if (request.getStatusCode().is2xxSuccessful() && request.getBody() != null) {
             RequestToGroomerForWorkingTimeDto requestToGroomer = RequestToGroomerForWorkingTimeDto.builder()
-                    .day(timeDto.getDay())
-                    .serviceType(timeDto.getServiceType())
+                    .day(timeDto.day())
+                    .serviceType(timeDto.serviceType())
                     .groomerId(Long.toString((Long) request.getBody()))
                     .build();
             ResponseEntity<ResponseFromGroomerForWorkingTimeDto> responseFromGroomer = requester.getRestTemplate()
@@ -82,7 +81,7 @@ public class TimeServiceImpl implements TimeService {
         ResponseEntity<ResponseFromUserOrderTimeManagementDto[]> response = ResponseEntity.badRequest().build();
         if (request.getStatusCode().is2xxSuccessful() && request.getBody() != null) {
             RequestToOrderForTimeManagementDto requestUserOrder = RequestToOrderForTimeManagementDto.builder()
-                    .day(timeDto.getDay())
+                    .day(timeDto.day())
                     .groomerId(Long.toString((Long) request.getBody()))
                     .build();
             ResponseEntity<ResponseFromUserOrderTimeManagementDto[]> responseFromUserOrder = requester.getRestTemplate()
@@ -106,7 +105,7 @@ public class TimeServiceImpl implements TimeService {
         if (body != null) {
             result = Arrays.stream(body).map(userOrder -> {
                 LocalTime end = userOrder.getTime().plusMinutes(userOrder.getDuration().getMinute());
-                return PeriodOrder.of(userOrder.getTime(), end);
+                return new PeriodOrder(userOrder.getTime(), end);
             }).toList();
         }
         return result;
@@ -117,7 +116,7 @@ public class TimeServiceImpl implements TimeService {
         LocalTime newStartTime = start.plusHours(serviceTime.getHour()).plusMinutes(serviceTime.getMinute());
         int comp = newStartTime.compareTo(finish);
         if (comp == 0 || comp < 0) {
-            result.add(PeriodOrder.of(start, newStartTime));
+            result.add(new PeriodOrder(start, newStartTime));
             result.addAll(createFreeTimePeriod(newStartTime, finish, serviceTime));
         }
         return result;
@@ -126,8 +125,8 @@ public class TimeServiceImpl implements TimeService {
 
     private List<PeriodOrder> freeTimeForOrder(List<PeriodOrder> allTimePeriod, List<PeriodOrder> busyOrders) {
         BiFunction<PeriodOrder, PeriodOrder, Boolean> periodOrderCompare = (o1, o2) -> {
-            int endWithStart = o1.getEnd().compareTo(o2.getStart());
-            int startWithEnd = o1.getStart().compareTo(o2.getEnd());
+            int endWithStart = o1.end().compareTo(o2.start());
+            int startWithEnd = o1.start().compareTo(o2.end());
             if (endWithStart == 0 || endWithStart < 0) {
                 return true;
             } else return startWithEnd == 0 || startWithEnd > 0;

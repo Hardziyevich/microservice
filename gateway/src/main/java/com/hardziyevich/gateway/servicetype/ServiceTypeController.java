@@ -33,15 +33,15 @@ public class ServiceTypeController {
 
     @PostMapping("/find")
     public ResponseEntity<String[]> showAllService(@RequestBody @Valid ServiceDto serviceDto) {
-        boolean groomerIsBlank = serviceDto.getGroomer().isBlank();
+        boolean groomerIsBlank = serviceDto.groomer().isBlank();
         ResponseEntity<String[]> responseEntity = ResponseEntity.badRequest().build();
         if (groomerIsBlank) {
-            responseEntity = responseToService(serviceDto.getGroomer(), serviceDto.getDay());
+            responseEntity = responseToService(serviceDto.groomer(), serviceDto.day());
         } else {
-            Field.GROOMER.setValue(serviceDto.getGroomer());
+            Field.GROOMER.setValue(serviceDto.groomer());
             ResponseEntity<?> request = requester.request();
             if (request.getStatusCode().is2xxSuccessful() && request.getBody() != null) {
-                responseEntity = responseToService(request.getBody().toString(), serviceDto.getDay());
+                responseEntity = responseToService(request.getBody().toString(), serviceDto.day());
             }
         }
         return responseEntity;
