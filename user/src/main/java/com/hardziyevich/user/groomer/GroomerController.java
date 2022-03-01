@@ -11,6 +11,7 @@ import java.util.List;
 @RequestMapping("/groomer")
 public class GroomerController {
 
+    private static final Long WRONG_RESULT = 0L;
     private final GroomerService groomerService;
 
     public GroomerController(GroomerServiceImpl groomerService) {
@@ -30,6 +31,6 @@ public class GroomerController {
     @PostMapping("/findGroomerIdByFirstNameAndLastName")
     public Long showAllGroomerIdByFirstNameAndLastName(@RequestBody @Valid PersonalDataGroomerDto request) {
         return groomerService.findGroomerIdByFirstNameAndLastName(request.getFirstName(), request.getLastName())
-                .orElse(0L);
+                .orElse(WRONG_RESULT);
     }
 }

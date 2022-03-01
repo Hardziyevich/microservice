@@ -2,7 +2,9 @@ package com.hardziyevich.user.user;
 
 import com.hardziyevich.resource.dto.SaveUserDto;
 
+import java.util.Optional;
+
 public interface UserService {
 
-    Long findOrSaveUser(SaveUserDto userDto);
+    Optional<Long> findOrSaveUser(SaveUserDto userDto);
 }

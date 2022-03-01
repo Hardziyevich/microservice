@@ -4,16 +4,18 @@ import com.hardziyevich.resource.dto.SaveUserDto;
 import com.hardziyevich.resource.mapper.Mapper;
 import com.hardziyevich.user.entity.User;
 import com.hardziyevich.user.repository.UserRepository;
+import org.hibernate.NonUniqueResultException;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
 
-    private static final Long WRONG_RESULT = 0L;
     private final UserRepository userRepository;
     private final Mapper<User, SaveUserDto> mapper;
 
@@ -24,11 +26,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Long findOrSaveUser(SaveUserDto userDto) {
-        Long result;
+    public Optional<Long> findOrSaveUser(SaveUserDto userDto) {
+        Optional<Long> result;
         ExampleMatcher userMatcher = ExampleMatcher.matching()
-                .withIgnorePaths("id")
-                .withIgnorePaths("password")
+                .withIgnorePaths("id", "password", "role")
                 .withMatcher("first_name", ExampleMatcher.GenericPropertyMatchers.contains())
                 .withMatcher("last_name", ExampleMatcher.GenericPropertyMatchers.contains())
                 .withMatcher("email", ExampleMatcher.GenericPropertyMatchers.contains());
@@ -36,10 +37,9 @@ public class UserServiceImpl implements UserService {
         boolean exists = userRepository.exists(userExample);
         if (exists) {
             result = userRepository.findOne(userExample)
-                    .map(User::getId)
-                    .orElse(WRONG_RESULT);
+                    .map(User::getId);
         } else {
-            result = userRepository.save(userExample.getProbe()).getId();
+            result = Optional.ofNullable(userRepository.save(userExample.getProbe()).getId());
         }
         return result;
     }
