@@ -13,20 +13,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-public class FindGroomerIdByNameAndLastName implements Requester {
+public record FindGroomerIdByNameAndLastName(RestTemplateBuilder builder,
+                                             ServiceProperties serviceProperties,
+                                             EndpointUserProperties endpointUserProperties) implements Requester {
 
-    private final RestTemplate restTemplate;
-    private final ServiceProperties serviceProperties;
-    private final EndpointUserProperties endpointUserProperties;
-    private final CommandProvider commandProvider = CommandProvider.FIND_GROOMER;
-
-    public FindGroomerIdByNameAndLastName(RestTemplateBuilder builder,
-                                          ServiceProperties serviceProperties,
-                                          EndpointUserProperties endpointUserProperties) {
-        this.restTemplate = builder.build();
-        this.serviceProperties = serviceProperties;
-        this.endpointUserProperties = endpointUserProperties;
-    }
+    private static final CommandProvider commandProvider = CommandProvider.FIND_GROOMER;
 
     @Override
     public ResponseEntity<Long> request() {
@@ -35,7 +26,7 @@ public class FindGroomerIdByNameAndLastName implements Requester {
         String firstName = initials[0];
         String lastName = initials[1];
         PersonalDataGroomerDto personalDataGroomerDto = new PersonalDataGroomerDto(firstName, lastName);
-        return restTemplate.postForEntity(serviceProperties.userGroomerUrl() + endpointUserProperties.findByNameAndLast(),
+        return builder().build().postForEntity(serviceProperties.userGroomerUrl() + endpointUserProperties.findByNameAndLast(),
                 personalDataGroomerDto, Long.class);
     }
 
@@ -46,6 +37,6 @@ public class FindGroomerIdByNameAndLastName implements Requester {
 
     @Override
     public RestTemplate getRestTemplate() {
-        return restTemplate;
+        return builder().build();
     }
 }

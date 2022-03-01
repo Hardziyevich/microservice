@@ -1,5 +1,6 @@
 package com.hardziyevich.gateway.command;
 
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -7,11 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Service
+@Component
 public class CommandRequestProviderImpl implements CommandRequestProvider {
 
     private final List<CommandRequest> commandRequests;
-
     private final Map<CommandProvider, CommandRequest> warehouse = new HashMap<>();
 
     public CommandRequestProviderImpl(List<CommandRequest> commandRequests) {
@@ -20,7 +20,7 @@ public class CommandRequestProviderImpl implements CommandRequestProvider {
 
     @PostConstruct
     public void init() {
-        commandRequests.forEach(c -> warehouse.put(c.showTypeRequest(),c));
+        commandRequests.forEach(c -> warehouse.put(c.showTypeRequest(), c));
     }
 
     @Override

@@ -36,6 +36,7 @@ public class FindAllGroomerBy implements CommandRequest  {
         return requester.showTypeRequest();
     }
 
+    @Override
     public void setRequester(Requester  requester) {
         this.requester = requester;
     }

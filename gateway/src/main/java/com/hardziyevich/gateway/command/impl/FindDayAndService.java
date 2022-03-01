@@ -13,20 +13,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-public class FindDayAndService implements Requester {
+public record FindDayAndService(RestTemplateBuilder builder,
+                                ServiceProperties serviceProperties,
+                                EndpointGroomerProperties endpointGroomerProperties) implements Requester {
 
-    private final RestTemplate restTemplate;
-    private final ServiceProperties serviceProperties;
-    private final EndpointGroomerProperties endpointGroomerProperties;
-    private final CommandProvider commandProvider = CommandProvider.FIND_DAY_AND_SERVICE;
-
-    public FindDayAndService(RestTemplateBuilder builder,
-                             ServiceProperties serviceProperties,
-                             EndpointGroomerProperties endpointGroomerProperties) {
-        this.restTemplate = builder.build();
-        this.serviceProperties = serviceProperties;
-        this.endpointGroomerProperties = endpointGroomerProperties;
-    }
+    private static final CommandProvider commandProvider = CommandProvider.FIND_DAY_AND_SERVICE;
 
     @Override
     public ResponseEntity<Long[]> request() {
@@ -34,7 +25,7 @@ public class FindDayAndService implements Requester {
                 commandProvider.getValueFromField(Field.DAY),
                 commandProvider.getValueFromField(Field.SERVICE)
         );
-        return restTemplate.postForEntity(serviceProperties.groomerDayUrl() + endpointGroomerProperties.byDayAndService(),
+        return builder().build().postForEntity(serviceProperties.groomerDayUrl() + endpointGroomerProperties.byDayAndService(),
                 requestToGroomerForWorkingDayDto, Long[].class);
     }
 
@@ -45,6 +36,6 @@ public class FindDayAndService implements Requester {
 
     @Override
     public RestTemplate getRestTemplate() {
-        return restTemplate;
+        return builder().build();
     }
 }

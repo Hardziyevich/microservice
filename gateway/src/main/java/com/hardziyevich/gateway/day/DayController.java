@@ -33,15 +33,15 @@ public class DayController {
 
     @PostMapping("/find")
     public ResponseEntity<String[]> showAllDay(@RequestBody @Valid RequestDayDto requestDayDto) {
-        boolean groomerIsBlank = requestDayDto.getGroomer().isBlank();
+        boolean groomerIsBlank = requestDayDto.groomer().isBlank();
         ResponseEntity<String[]> responseEntity = ResponseEntity.badRequest().build();
         if (groomerIsBlank) {
-            responseEntity = responseToService(requestDayDto.getGroomer(), requestDayDto.getServiceType());
+            responseEntity = responseToService(requestDayDto.groomer(), requestDayDto.serviceType());
         } else {
-            Field.GROOMER.setValue(requestDayDto.getGroomer());
+            Field.GROOMER.setValue(requestDayDto.groomer());
             ResponseEntity<?> request = requester.request();
             if (request.getStatusCode().is2xxSuccessful() && request.getBody() != null) {
-                    responseEntity = responseToService(request.getBody().toString(), requestDayDto.getServiceType());
+                    responseEntity = responseToService(request.getBody().toString(), requestDayDto.serviceType());
             }
         }
         return responseEntity;

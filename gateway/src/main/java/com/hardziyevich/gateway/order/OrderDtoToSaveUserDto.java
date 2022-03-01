@@ -10,9 +10,9 @@ public class OrderDtoToSaveUserDto implements Mapper<SaveUserDto,OrderDto> {
     @Override
     public SaveUserDto mapTo(OrderDto orderDto) {
         return SaveUserDto.builder()
-                .firstName(orderDto.getFirstName())
-                .lastName(orderDto.getLastName())
-                .email(orderDto.getEmail())
+                .firstName(orderDto.firstName())
+                .lastName(orderDto.lastName())
+                .email(orderDto.email())
                 .build();
     }
 }

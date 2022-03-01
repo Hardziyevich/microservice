@@ -48,7 +48,7 @@ public record OrderServiceImpl(
     }
 
     private Long getGroomerId(OrderDto orderDto) {
-        Field.GROOMER.setValue(orderDto.getGroomer());
+        Field.GROOMER.setValue(orderDto.groomer());
         ResponseEntity<?> response = requester.request();
         return checkResponseEntity(response);
 

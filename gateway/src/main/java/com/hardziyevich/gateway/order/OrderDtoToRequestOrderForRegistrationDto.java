@@ -15,9 +15,9 @@ public class OrderDtoToRequestOrderForRegistrationDto implements Mapper<RequestT
     public RequestToOrderForRegistrationOrderDto mapTo(OrderDto orderDto) {
         TimeManagement timeManagement = TimeManagement.parse(orderDto);
         return RequestToOrderForRegistrationOrderDto.builder()
-                .petName(orderDto.getPetName())
-                .service(orderDto.getServiceType())
-                .day(LocalDate.parse(orderDto.getDay()))
+                .petName(orderDto.petName())
+                .service(orderDto.serviceType())
+                .day(LocalDate.parse(orderDto.day()))
                 .time(timeManagement.getTime())
                 .duration(timeManagement.duration)
                 .build();
@@ -30,7 +30,7 @@ public class OrderDtoToRequestOrderForRegistrationDto implements Mapper<RequestT
         private LocalTime duration;
 
         static TimeManagement parse(OrderDto orderDto) {
-            String[] parseTime = orderDto.getTimeType().split("-");
+            String[] parseTime = orderDto.timeType().split("-");
             LocalTime start = LocalTime.parse(parseTime[0]);
             LocalTime end = LocalTime.parse(parseTime[1]);
             LocalTime duration = end.minusHours(start.getHour()).minusMinutes(start.getMinute());
