@@ -1,0 +1,6 @@
+rootProject.name = 'groomer-service'
+include(':order')
+include(':user')
+include(':gateway')
+include(':groomer')
+include(':resource')

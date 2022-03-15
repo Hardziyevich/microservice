@@ -1,0 +1,26 @@
+plugins {
+    id 'com.hardziyevich.java-conventions'
+    id 'org.springframework.boot' version '2.6.4'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'docker-plugin'
+}
+
+dependencies {
+    api project(':resource')
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-configuration-processor'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+description = 'gateway'
+
+jar.enabled = false
+
+dockerImageBuild {
+    dependsOn build
+    image.nameImage = "$archivesBaseName:$archivesBaseName"
+    image.envArg = ['JAR_FILE':"./${buildDir.name}/libs/${archivesBaseName}-${version}.jar"]
+}
